@@ -1,12 +1,20 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
+
+form{
+  width: fit-content;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
 
+
+.error{
+  color:red;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
