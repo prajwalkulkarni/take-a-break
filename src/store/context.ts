@@ -8,7 +8,8 @@ export enum types {
     STRETCH = 'STRETCH',
     SHSTRETCH = 'SHSTRETCH',
     WATER = 'WATER',
-    SHWATER = 'SHWATER'
+    SHWATER = 'SHWATER',
+    REMINDER = 'REMINDER'
 }
 
 
@@ -16,6 +17,7 @@ export enum types {
     blinkInterval: number,
     stretchInterval: number,
     waterInterval: number,
+    enablereminder: boolean,
     shBlinkNotif: boolean,
     shStretchNotif: boolean,
     shWaterNotif: boolean,
@@ -24,18 +26,20 @@ export enum types {
     setWaterInterval: Function,
     setBlinkNotif:Function,
     setStretchNotif:Function,
-    setWaterNotif:Function
+    setWaterNotif:Function,
+    setReminder:Function
  }
 
  type Action = {
     type:types,
     time : number,
-    shStatus:boolean
+    shStatus:boolean,
+    reminder: boolean
  }
 
 
  export function dispatchHandler(state:State,action:Action){
-    const {type,time,shStatus} = action
+    const {type,time,shStatus, reminder} = action
 
     switch(type){
         case types.BLINK:
@@ -50,6 +54,8 @@ export enum types {
             return {...state,shStretchNotif:shStatus}
         case types.SHWATER:
             return {...state,shWaterNotif:shStatus} 
+        case types.REMINDER:
+            return {...state,enablereminder:reminder}
         default:
             return state    
     }
