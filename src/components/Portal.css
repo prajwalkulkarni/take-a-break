@@ -44,7 +44,7 @@
     background: whitesmoke;
 }
 
-button {
+.dismissbtn {
     background-color: #8e24aa;
     border-radius: 5px;
     border: none;
@@ -56,10 +56,16 @@ button {
     width: 100%;
 }
 
-button:hover, button:active{
+.dismissbtn:hover, .dismissbtn:active{
     background-color: #631976;
 }
 
+
+button{
+    border:none;
+    color:white;
+    background-color: transparent;
+}
 
 article{
     color: gray;
