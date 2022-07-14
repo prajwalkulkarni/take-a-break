@@ -6,9 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import ContextWrapper from './store/ContextWrapper';
 import { ChakraProvider } from '@chakra-ui/react'
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <ChakraProvider resetCSS={false}>

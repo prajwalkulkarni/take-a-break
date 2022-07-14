@@ -1,8 +1,9 @@
 form{
-  /* width: fit-content; */
+  /* width: 50%; */
   margin:0;
-  width: 25%;
-  height:fit-content;
+  /* width: fit-content; */
+  width: 100%;
+  height:100%;
   transition: height 0.5s ease-in-out;
 }
 .App-logo {
@@ -11,8 +12,12 @@ form{
 }
 
 
+input[type='range']{
+  color: green;
+}
+
 input[type='submit']{
-  background-color: rgb(78, 211, 255);
+  background-color: #8e24aa;
   border-radius: 5px;
   border: none;
   color: white;
@@ -24,7 +29,7 @@ input[type='submit']{
 }
 
 input[type='submit']:hover{
-  background-color: rgb(36, 200, 255);
+  background-color: #631976;
 }
 
 input[type='range']{
@@ -41,15 +46,46 @@ input[type='range']{
   transition: .2s;
 }
 
+input[type='range']::-webkit-slider-thumb{
+  appearance: none;
+  background-color: #8e24aa;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+}
+
+input[type='range']::-webkit-slider-thumb:active{
+  background-color: #631976;
+} 
+
+
+input[type='range']::-moz-slider-thumb{
+  appearance: none;
+  background-color: #8e24aa;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+}
+
+input[type='range']::-moz-slider-thumb:active{
+  background-color: #631976;
+} 
+
 .inputcontainer{
   padding: 0.1rem;
   margin: 0.1rem;
-
+}
+.togglecontainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.1rem;
+  margin: 0.1rem;
+  flex-wrap: wrap;
 }
 .error{
-  color:red;
+  color: red;
 }
-
 
 .toggle{
   display: flex;
@@ -104,7 +140,5 @@ input[type='range']{
   background-color: lightgreen;
   border-top-right-radius: 50%;
   border-bottom-right-radius: 50%;
-  
-  
   transform: translateX(100%);
 }
