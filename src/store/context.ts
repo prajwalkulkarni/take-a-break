@@ -1,5 +1,5 @@
 
-import React, { PropsWithChildren } from 'react'
+import React, { PropsWithChildren, createContext } from 'react'
 
 
 export enum types {
@@ -8,8 +8,7 @@ export enum types {
     STRETCH = 'STRETCH',
     SHSTRETCH = 'SHSTRETCH',
     WATER = 'WATER',
-    SHWATER = 'SHWATER',
-    REMINDER = 'REMINDER'
+    SHWATER = 'SHWATER'
 }
 
 
@@ -17,7 +16,6 @@ export enum types {
     blinkInterval: number,
     stretchInterval: number,
     waterInterval: number,
-    enablereminder: boolean,
     shBlinkNotif: boolean,
     shStretchNotif: boolean,
     shWaterNotif: boolean,
@@ -27,19 +25,17 @@ export enum types {
     setBlinkNotif:Function,
     setStretchNotif:Function,
     setWaterNotif:Function,
-    setReminder:Function
  }
 
  type Action = {
     type:types,
     time : number,
-    shStatus:boolean,
-    reminder: boolean
+    shStatus:boolean
  }
 
 
  export function dispatchHandler(state:State,action:Action){
-    const {type,time,shStatus, reminder} = action
+    const {type,time,shStatus} = action
 
     switch(type){
         case types.BLINK:
@@ -54,14 +50,12 @@ export enum types {
             return {...state,shStretchNotif:shStatus}
         case types.SHWATER:
             return {...state,shWaterNotif:shStatus} 
-        case types.REMINDER:
-            return {...state,enablereminder:reminder}
         default:
             return state    
     }
  }
 
-export const Context = React.createContext<State|null>(null)
+export const Context = createContext<State|null>(null)
 
 
 
