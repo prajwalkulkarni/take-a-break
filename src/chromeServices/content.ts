@@ -157,43 +157,11 @@ function inject(msg: ChromeMessage, sender: chrome.runtime.MessageSender, sendRe
         const body = document.body
         body.style.overflow = 'auto'
     }
-   
-    // const portal = document.createElement("div");
-
-    // portal.style.position = "absolute";
-    // portal.style.zIndex = "9999";
-    // portal.style.top = "0";
-    // portal.style.left = "0";
-    // portal.style.width = "100%";
-    // portal.style.height = "100vh";
-    // portal.id = "portal";
-    
-
-    // const root = portal.attachShadow({ mode: "open" });
-    
-    // document.body.appendChild(portal);
-    
-    
-    // const innerDiv = document.createElement("div");
-    // innerDiv.id = "innerDiv";
-    // root.appendChild(innerDiv)
-    
-    
-    // innerDiv.style.width = "100%";
-    // innerDiv.style.height = "100%";
-    // ReactDOM.render(React.createElement(DOMContent), innerDiv);
     return true
 
     
 }
 
-// chrome.alarms.onAlarm.addListener(
-//     onAlarm
-//   )
-
-  function onAlarm(alarm:unknown){
-   console.log(alarm)
-  }
 
 
 chrome.runtime.onMessage.addListener(inject);
