@@ -4,22 +4,6 @@ import DOMContent from "./DOMContent";
 import {ChromeMessage, Sender, DOMMessageResponse} from '../types';
 
 
-const message: ChromeMessage = {
-    from: Sender.React,
-    message: "SET_INTERVALS",
-  }
-
-  const queryInfo: chrome.tabs.QueryInfo = {
-    active: true,
-    currentWindow: true
-};
-
-type Interval = {
-    blink: number,
-    water: number,
-    stretch: number
-}
-
 function inject(msg: ChromeMessage, sender: chrome.runtime.MessageSender, sendResponse: (response: DOMMessageResponse) => void) {
 
     
