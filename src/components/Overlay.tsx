@@ -1,9 +1,10 @@
-import { PropsWithChildren, ReactNode, useContext } from "react";
+import React,{useContext, PropsWithChildren } from "react";
 import { Context } from "../store/context";
 import useInterval from "../util/useInterval";
 import { data } from "../util/data";
 import Timer from "./Timer";
-import React from 'react'
+import {ChromeMessage, Sender} from "../types";
+
 
 interface ImageObject {
     'blink' : string,
@@ -15,10 +16,40 @@ const image: ImageObject = {
     'stretch' : 'https://doodleipsum.com/700/flat?i=1c19a2de0d01935993e256652f8b6ebd',
     'water' : 'https://doodleipsum.com/700/flat?i=23243fc71ac1a810a5873bde01e17f07'
 }
+
+const message: ChromeMessage = {
+    from: Sender.React,
+    message: "RM_OVERLAY",
+  }
+
+  const queryInfo: chrome.tabs.QueryInfo = {
+    active: true,
+    currentWindow: true
+  };
+
 const Overlay: React.FC<PropsWithChildren & {breakType:string,breakTime:number}> = (props) =>{
 
     const hideNotif = useInterval(props.breakType)
 
+    const handleDismiss = () => {
+        console.log("Dismiss")
+        hideNotif()
+       
+          chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
+            const currentTabId = tabs[0].id;
+            console.log(currentTabId)
+            chrome.tabs.sendMessage(
+                currentTabId as number,
+                message,
+                (response) => {
+                  // setResponseFromContent(response);
+                  if (!window.chrome.runtime.lastError) {
+                      // do you work, that's it. No more unchecked error
+                      console.log(response)
+                    }
+              });
+        });
+    }
 
     return(
        
@@ -29,7 +60,7 @@ const Overlay: React.FC<PropsWithChildren & {breakType:string,breakTime:number}>
 
             <article>{data[props.breakType as keyof typeof data].description}</article>
 
-            <button className="dismissbtn" onClick={()=>hideNotif()}>Dismiss</button>
+            <button className="dismissbtn" onClick={handleDismiss}>Dismiss</button>
         </div>
        
     )

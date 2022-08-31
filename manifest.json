@@ -8,18 +8,19 @@
     "default_title": "Take a break"
   },
   "permissions":[
+    "alarms",
     "tabs",
-    "activeTab"
+    "activeTab",
+    "storage"
+    
   ],
   "host_permissions":[
     "<all_urls>"
   ],
-  "content_scripts": [
-    {
-        "matches": ["http://*/*", "https://*/*"],
-        "js": ["./content.js"]
-    }
- ],
+ 
+  "background":{
+    "service_worker":"./background.js"
+  },
   "icons": {
     "16": "logo192.png",
     "48": "logo192.png",

@@ -1,10 +1,21 @@
 import React,{ useEffect, useState } from "react"
 import useInterval from "../util/useInterval"
 import './Timer.css'
-
+import { ChromeMessage, Sender } from "../types"
 const second =  1000
 const minute = 60000
 const hour = 3600000
+
+const message: ChromeMessage = {
+    from: Sender.React,
+    message: "RM_OVERLAY",
+  }
+
+  const queryInfo: chrome.tabs.QueryInfo = {
+    active: true,
+    currentWindow: true
+  };
+  
 const Timer: React.FC<{breakTime:number, breakType:string}> = (props) =>{
 
     const [countdown,setCountDown] = useState({
@@ -15,6 +26,24 @@ const Timer: React.FC<{breakTime:number, breakType:string}> = (props) =>{
     })
 
     const hideNotif = useInterval(props.breakType)
+    const handleDismiss = () => {
+        hideNotif()
+       
+          chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
+            const currentTabId = tabs[0].id;
+            console.log(currentTabId)
+            chrome.tabs.sendMessage(
+                currentTabId as number,
+                message,
+                (response) => {
+                    // setResponseFromContent(response);
+                    if (!window.chrome.runtime.lastError) {
+                        // do you work, that's it. No more unchecked error
+                        console.log(response)
+                      }
+                });
+        });
+    }
 
 
 
@@ -31,7 +60,7 @@ const Timer: React.FC<{breakTime:number, breakType:string}> = (props) =>{
             if(msToMinutes>0) breakTime-=(msToMinutes*minute)
 
             let msToSeconds = Math.trunc(breakTime/second)
-            if(refTime===0)hideNotif()
+            if(refTime===0)handleDismiss()
             breakTime = refTime - second
             refTime-=second
             

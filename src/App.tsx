@@ -1,15 +1,18 @@
 import React, { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 import './App.css';
-import { Context } from './store/context';
-import useTime from './util/useTime';
-import { ChromeMessage, Sender } from './types';
 
+import { backgroundWorker } from './util/background-util'
 import { useToast } from '@chakra-ui/react'
 
+const queryInfo: chrome.tabs.QueryInfo = {
+  active: true,
+  currentWindow: true
+};
 function App() {
 
 
   const toast = useToast()
+ 
 
   const [interval, setIntervals] = useState({
     blink: 20,
@@ -20,11 +23,11 @@ function App() {
 
   const [toggleCheck, setToggleCheck] = useState(false)
 
-  const { blinkAlarmIn, waterAlarmIn, stretchAlarmIn } = useTime()
 
   const [err, showError] = useState(false)
 
-  const ctx = useContext(Context)
+  const { setBreakIntervals, setNotifState, blinkAlarmIn, waterAlarmIn, stretchAlarmIn } = backgroundWorker()
+
 
   const setBlinkreminder = (e: ChangeEvent<HTMLInputElement>) => setIntervals(prev => {
 
@@ -49,6 +52,19 @@ function App() {
   })
 
 
+  useEffect(() => {
+    chrome.storage.sync.get(['blink', 'water', 'stretch', 'toggleState'], function (result) {
+      console.log('Intervals get');
+      setIntervals({
+        blink: result.blink,
+        stretch: result.stretch,
+        water: result.water
+      })
+
+      setToggleCheck(result.toggleState)
+    });
+  }, [])
+
   const updateIntervals = (e: FormEvent) => {
     e.preventDefault()
 
@@ -58,13 +74,21 @@ function App() {
     }
 
     showError(false)
-    ctx?.setBlinkInterval(interval.blink)
-    ctx?.setStretchInterval(interval.stretch)
-    ctx?.setWaterInterval(interval.water)
+
+  //   chrome.runtime.onInstalled.addListener(details=>{
+  //     chrome.alarms.create('blink', {
+  //         delayInMinutes: interval.blink,
+  //         periodInMinutes: interval.blink
+  //       })
+  // })
+    
+
+    setBreakIntervals(interval)
+    setNotifState(false, false, false, toggleCheck)
 
     blinkAlarmIn(interval.blink, toggleCheck)
-    stretchAlarmIn(interval.stretch, toggleCheck)
     waterAlarmIn(interval.water, toggleCheck)
+    stretchAlarmIn(interval.stretch, toggleCheck)
 
     toast({
       title: 'Settings saved.',
@@ -75,26 +99,7 @@ function App() {
       isClosable: true,
     })
 
-    const message: ChromeMessage = {
-      from: Sender.React,
-      message: "SET_INTERVALS",
-    }
 
-    const queryInfo: chrome.tabs.QueryInfo = {
-      active: true,
-      currentWindow: true
-    };
-    chrome.tabs && chrome.tabs.query(queryInfo, tabs => {
-      const currentTabId = tabs[0].id;
-      console.log(currentTabId)
-      chrome.tabs.sendMessage(
-          currentTabId as number,
-          message,
-          (response) => {
-              // setResponseFromContent(response);
-              console.log(response);
-          });
-  });
   }
   return (
     <div className="App">

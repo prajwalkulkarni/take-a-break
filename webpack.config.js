@@ -1,76 +1,82 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack  = require('webpack');
 const CopyPlugin = require("copy-webpack-plugin");
-const webpack = require('webpack');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-
     entry: {
-        index: './src/index.tsx',
-        content: './src/chromeServices/content.ts',
+        index:'./src/index.tsx',
+        // content:'./src/chromeServices/content.ts',
+        background:'./src/chromeServices/background.ts',
     },
     mode: 'production',
-    output:{
-        path: path.join(__dirname, 'dist'),
+    output: {
         filename: '[name].js',
-        publicPath: '/static/',
+        path: path.resolve(__dirname, 'dist'),
     },
     module: {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
-                use: ['babel-loader']
-                
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
+                    }
+                },
             },
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: [MiniCssExtractPlugin.loader,'css-loader'],
             },
             {
                 test: /\.html$/,
-                use: ['html-loader']
+                use: ['html-loader'],
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: ['file-loader']
-            }
-        ]
+                test: /\.(png|jpg|gif)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'assets/',
+                            publicPath: 'assets/',
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js'],
     },
     plugins: [
+        
         new HtmlWebpackPlugin({
-            template: './public/index.html',
+            template: 'index.html',
             filename: 'index.html',
-        }),
-        new CopyPlugin({
-            patterns: [ { from: './public/manifest.json', to: 'manifest.json' },]
-        }),
-        new CopyPlugin({
-            patterns: [ { from: './public/logo192.png', to: path.join(__dirname,'dist') },]
         }),
         new webpack.ProvidePlugin({
             'React':'react',
-        })
-     
-    ],
-   
-    resolve:{
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
-       
-    },
-
-    externals:{
-        react: {
-            commonjs: "react",
-            commonjs2: "react",
-            amd: "React",
-            root: "React"
-        },
-        "react-dom":{
-            commonjs:"react-dom",
-            commonjs2:"react-dom",
-            amd:"ReactDOM",
-            root:"ReactDOM"
-        }
-    }
-}
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: 'manifest.json',
+                    to: 'manifest.json',
+                }
+            ],
+        }),
+        new CopyPlugin({
+            patterns: [ { from: './manifest.json', to: 'manifest.json' },]
+        }),
+        new CopyPlugin({
+            patterns: [ { from: './logo192.png', to: path.join(__dirname,'dist') },]
+        }),
+        new MiniCssExtractPlugin()
+        
+    ]
+};

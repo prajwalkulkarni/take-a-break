@@ -1,22 +1,41 @@
 import { useContext } from "react"
 import { Context } from "../store/context"
-import useTime from "./useTime"
+import { backgroundWorker } from "../util/background-util"
 export default function useInterval(breakType:string){
     const ctx = useContext(Context)
-    const {blinkAlarmIn,waterAlarmIn,stretchAlarmIn} = useTime()
+    const {setWaterNotif, setBlinkNotif, setStretchNotif,blinkAlarmIn, waterAlarmIn, stretchAlarmIn} = backgroundWorker()
+    // const {blinkAlarmIn, waterAlarmIn, stretchAlarmIn} = manageState()
+   
     const hideNotif = () =>{
         switch(breakType){
             case 'water':
-                ctx?.setWaterNotif(false)
-                waterAlarmIn(ctx?.waterInterval ?? 10, true)
+                setWaterNotif(false)
+
+                chrome.storage.sync.get(['water'], function(result) {
+                    
+                    console.log(result);
+                    waterAlarmIn(result.water ?? 10, true)
+                });
                 break;
             case 'blink':
-                ctx?.setBlinkNotif(false)
-                blinkAlarmIn(ctx?.blinkInterval ?? 1, true)
+                setBlinkNotif(false)
+
+                chrome.storage.sync.get(['blink'], function(result) {
+                    
+                    console.log(result);
+                    blinkAlarmIn(result.blink ?? 1, true)
+                });
+                
                 break;
             case 'stretch':
-                ctx?.setStretchNotif(false)
-                stretchAlarmIn(ctx?.stretchInterval ?? 1, true)
+                setStretchNotif(false)
+
+                chrome.storage.sync.get(['stretch'], function(result) {
+                    
+                    console.log(result);
+                    stretchAlarmIn(result.stretch ?? 1, true)
+                });
+                
                 break;
             default:
                 return
