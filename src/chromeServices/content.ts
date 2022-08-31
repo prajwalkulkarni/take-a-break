@@ -1,11 +1,7 @@
 import ReactDOM  from "react-dom";
 import React from "react";
 import DOMContent from "./DOMContent";
-import {ChromeMessage, Sender, DOMMessage, DOMMessageResponse} from '../types';
-import { position } from "@chakra-ui/react";
-import ContextWrapper from "../store/ContextWrapper";
-
-let blinkInterval: any, waterInterval: any, stretchInterval: any
+import {ChromeMessage, Sender, DOMMessageResponse} from '../types';
 
 
 const message: ChromeMessage = {
