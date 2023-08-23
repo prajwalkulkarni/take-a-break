@@ -5,26 +5,27 @@ var __webpack_exports__ = {};
   !*** ./scripts/content.ts ***!
   \****************************/
 
-var _a, _b;
-var article = document.querySelector("article");
-// `document.querySelector` may return null if the selector doesn't match anything.
-if (article) {
-    var text = article.textContent;
-    var wordMatchRegExp = /[^\s]+/g; // Regular expression
-    var words = (text === null || text === void 0 ? void 0 : text.matchAll(wordMatchRegExp)) || "hello";
-    // matchAll returns an iterator, convert to array to get word count
-    console.log(words);
-    var wordCount = [words].length;
-    var readingTime = Math.round(wordCount / 200);
-    var badge = document.createElement("p");
-    // Use the same styling as the publish information in an article's header
-    badge.classList.add("color-secondary-text", "type--caption");
-    badge.textContent = "\u23F1\uFE0F ".concat(readingTime, " min read");
-    // Support for API reference docs
-    var heading = article.querySelector("h1");
-    // Support for article docs with date
-    var date = (_a = article.querySelector("time")) === null || _a === void 0 ? void 0 : _a.parentNode;
-    (_b = (date !== null && date !== void 0 ? date : heading)) === null || _b === void 0 ? void 0 : _b.insertAdjacentElement("afterend", badge);
+if (window.location.href.startsWith("http") ||
+    window.location.href.startsWith("https")) {
+    // const body = document.querySelector('body');
+    var div = document.createElement("div");
+    div.style.position = "fixed";
+    div.style.top = "0";
+    div.style.left = "0";
+    div.style.width = "100%";
+    div.style.height = "100%";
+    div.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    div.style.zIndex = "9999";
+    div.style.display = "flex";
+    div.style.justifyContent = "center";
+    div.style.alignItems = "center";
+    var h1 = document.createElement("h1");
+    h1.style.color = "#fff";
+    h1.style.fontSize = "5rem";
+    h1.style.textAlign = "center";
+    h1.textContent = "Take a break!";
+    div.appendChild(h1);
+    document.body.appendChild(div);
 }
 
 /******/ })()

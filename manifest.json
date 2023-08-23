@@ -13,10 +13,7 @@
     "content_scripts": [
         {
           "js": ["dist/content.js"],
-          "matches": [
-            "https://developer.chrome.com/docs/extensions/*",
-            "https://developer.chrome.com/docs/webstore/*"
-          ]
+          "matches": ["https://*/*", "http://*/*"]
         }
       ]
 }
