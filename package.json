@@ -1,0 +1,41 @@
+{
+  "name": "take-a-break",
+  "version": "1.0.0",
+  "description": "Take a break from screen time",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --open --config webpack.dev.js",
+    "watch": "webpack --watch --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prajwalkulkarni/take-a-break.git"
+  },
+  "keywords": [
+    "take",
+    "a",
+    "break",
+    "screen",
+    "time"
+  ],
+  "author": "Prajwal Kulkarni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prajwalkulkarni/take-a-break/issues"
+  },
+  "homepage": "https://github.com/prajwalkulkarni/take-a-break#readme",
+  "devDependencies": {
+    "@types/chrome": "^0.0.243",
+    "css-loader": "^6.8.1",
+    "html-webpack-plugin": "^5.5.3",
+    "mini-css-extract-plugin": "^2.7.6",
+    "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "manifest_version":3,
+    "name": "Take a Break",
+    "version": "1.0",
+    "action": {
+        "default_icon": "images/favicon-16x16.png",
+        "default_popup": "dist/popup.html",
+        "default_title": "Take a Break"
+    },
+    "icons":{
+        "16": "images/favicon-16x16.png"
+    },
+    "content_scripts": [
+        {
+          "js": ["dist/content.js"],
+          "matches": [
+            "https://developer.chrome.com/docs/extensions/*",
+            "https://developer.chrome.com/docs/webstore/*"
+          ]
+        }
+      ]
+}

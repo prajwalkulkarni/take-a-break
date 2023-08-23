@@ -1,0 +1,33 @@
+/*!*******************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./popup/popup.css ***!
+  \*******************************************************************/
+body{
+    width: 300px;
+    height: 300px;
+    padding: 0;
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+input[type="submit"],input[type="range"]{
+    width: 100%;
+}
+
+/*# sourceMappingURL=popup.css.map*/
