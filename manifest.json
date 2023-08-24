@@ -10,10 +10,11 @@
     "icons":{
         "16": "images/favicon-16x16.png"
     },
+    "permissions":["tabs"],
     "content_scripts": [
         {
           "js": ["dist/content.js"],
-          "matches": ["https://*/*", "http://*/*"]
+          "matches": ["<all_urls>"]
         }
       ]
 }
