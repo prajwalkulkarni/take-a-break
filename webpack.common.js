@@ -4,7 +4,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   entry: {
     content: "./scripts/content.ts", // content script
-    logicHandler: "./scripts/logicHandler.ts", // logic handler
+    background: "./scripts/background.ts", // background script
+    middleware: "./scripts/middleware.ts", // logic handler
   }, // entry point
   output: {
     path: path.join(__dirname, "/dist"), // output directory
@@ -35,7 +36,7 @@ module.exports = {
       filename: "popup.html", // name of the generated html file
     }),
     new MiniCssExtractPlugin({
-      filename: "popup.css", // name of the generated css file
+      filename: "[name].css", // name of the generated css file
     }),
   ],
 };

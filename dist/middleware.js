@@ -57,18 +57,24 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 var exports = __webpack_exports__;
-/*!*********************************!*\
-  !*** ./scripts/logicHandler.ts ***!
-  \*********************************/
+/*!*******************************!*\
+  !*** ./scripts/middleware.ts ***!
+  \*******************************/
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ../popup/popup.css */ "./popup/popup.css");
-function iife() {
-    var states = [];
-}
+var form = document.querySelector("form");
+form === null || form === void 0 ? void 0 : form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var formData = new FormData(form);
+    var timeout = parseInt(formData.get("timeout"));
+    var water = parseInt(formData.get("water"));
+    var walk = parseInt(formData.get("walk"));
+    chrome.runtime.sendMessage({ timeout: timeout, water: water, walk: walk });
+});
 
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=logicHandler.js.map
+//# sourceMappingURL=middleware.js.map

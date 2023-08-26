@@ -10,11 +10,9 @@
     "icons":{
         "16": "images/favicon-16x16.png"
     },
-    "permissions":["tabs"],
-    "content_scripts": [
-        {
-          "js": ["dist/content.js"],
-          "matches": ["<all_urls>"]
-        }
-      ]
+    "permissions":["tabs", "storage", "alarms", "notifications", "activeTab", "background", "scripting"],
+    "host_permissions": ["https://*/*", "http://*/*"],
+    "background": {
+      "service_worker": "dist/background.js"
+    }
 }
