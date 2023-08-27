@@ -11,6 +11,9 @@ module.exports = {
     path: path.join(__dirname, "/dist"), // output directory
     filename: "[name].js", // name of the generated bundle
   },
+  resolve: {
+    extensions: [".ts", ".js", ".css"],
+  },
   module: {
     rules: [
       {
@@ -21,8 +24,12 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/, // look for .css files
+        test: /popup.css$/, // look for .css files
         use: [MiniCssExtractPlugin.loader, "css-loader"], // use style-loader and css-loader
+      },
+      {
+        test: /content.css$/, // look for .css files
+        use: ["style-loader", "css-loader"], // use style-loader and css-loader
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
@@ -36,7 +43,7 @@ module.exports = {
       filename: "popup.html", // name of the generated html file
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css", // name of the generated css file
+      filename: "[name].css", // name of the generated bundle
     }),
   ],
 };

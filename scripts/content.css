@@ -1,4 +1,4 @@
-.takeABreak__container{
+div.takeABreak__container{
   position : fixed;
   top : 0;
   left : 0;
@@ -12,8 +12,34 @@
   align-items : center;
 }
 
-.takeABreak__title{
+h1.takeABreak__title{
     color : #fff;
     font-size : 5rem;
     text-align : center;
+}
+
+.takeABreak__timer{
+    color : #fff;
+    font-size : 2rem;
+    text-align : center;
+}
+
+.takeABreak__task{
+    color : #fff;
+    font-size : 2rem;
+    text-align : center;
+}
+
+.takeABreak__dismiss{
+  color: #fff;
+  padding: 0.5rem;
+  background-color: rgb(212, 127, 0);
+  border-radius: 4px;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.takeABreak__dismiss:hover{
+  background-color: rgb(255, 153, 0);
 }

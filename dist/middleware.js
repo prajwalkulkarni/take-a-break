@@ -63,14 +63,16 @@ var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ../popup/popup.css */ "./popup/popup.css");
-var form = document.querySelector("form");
-form === null || form === void 0 ? void 0 : form.addEventListener("submit", function (e) {
+const form = document.querySelector("form");
+form === null || form === void 0 ? void 0 : form.addEventListener("submit", (e) => {
     e.preventDefault();
-    var formData = new FormData(form);
-    var timeout = parseInt(formData.get("timeout"));
-    var water = parseInt(formData.get("water"));
-    var walk = parseInt(formData.get("walk"));
-    chrome.runtime.sendMessage({ timeout: timeout, water: water, walk: walk });
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    const formData = new FormData(form);
+    const timeout = parseInt(formData.get("timeout"));
+    const water = parseInt(formData.get("water"));
+    const walk = parseInt(formData.get("walk"));
+    chrome.runtime.sendMessage({ timeout, water, walk });
 });
 
 })();
