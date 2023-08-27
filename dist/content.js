@@ -597,7 +597,8 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ./content.css */ "./scripts/content.css");
 chrome.storage.local.get(["breakAlarm", "walkAlarm", "waterAlarm"], (items) => {
-    const [task, interval] = getMessageAndInterval(items.task);
+    const taskName = getTaskName(items);
+    const [task, interval] = getMessageAndInterval(taskName);
     if (window.location.href.startsWith("http") ||
         window.location.href.startsWith("https")) {
         // const body = document.querySelector('body');
@@ -605,7 +606,7 @@ chrome.storage.local.get(["breakAlarm", "walkAlarm", "waterAlarm"], (items) => {
         const checkIfTakeABreakContainerExists = document.querySelector(".takeABreak__container");
         if (checkIfTakeABreakContainerExists) {
             const h2 = document.querySelector(".takeABreak__task");
-            (h2 === null || h2 === void 0 ? void 0 : h2.textContent) && (h2.textContent = h2.textContent + task);
+            (h2 === null || h2 === void 0 ? void 0 : h2.textContent) && (h2.textContent = task);
             const h3 = document.querySelector(".takeABreak__timer");
             const timer = interval;
             h3 && (h3.textContent = `You can continue in ${timer / 1000} seconds`);
@@ -648,6 +649,7 @@ chrome.storage.local.get(["breakAlarm", "walkAlarm", "waterAlarm"], (items) => {
                 timer = interval;
             }, interval);
         }
+        chrome.storage.local.remove(["breakAlarm", "waterAlarm", "walkAlarm"]);
     }
 });
 function getMessageAndInterval(alarmName) {
@@ -657,10 +659,43 @@ function getMessageAndInterval(alarmName) {
         case "waterAlarm":
             return ["And Drink A Glass Of Water", 60000];
         case "walkAlarm":
+        case "breakAndWalkAlarm":
             return ["To Stretch And Walk Around For 2 Minutes", 120000];
+        case "breakAndWaterAlarm":
+            return ["To Drink a Glass of water and look away from the screen", 80000];
+        case "breakAndWaterAndWalkAlarm":
+            return [
+                "Time to drink a glass of water, look away from the screen and take a short walk",
+                180000,
+            ];
         default:
             return ["", 0];
     }
+}
+function getTaskName(items) {
+    let taskName;
+    if (items.breakAlarm && items.waterAlarm && items.walkAlarm) {
+        taskName = "breakAndWaterAndWalkAlarm";
+    }
+    else if (items.breakAlarm && items.waterAlarm) {
+        taskName = "breakAndWaterAlarm";
+    }
+    else if (items.breakAlarm && items.walkAlarm) {
+        taskName = "breakAndWalkAlarm";
+    }
+    else if (items.breakAlarm) {
+        taskName = "breakAlarm";
+    }
+    else if (items.waterAlarm) {
+        taskName = "waterAlarm";
+    }
+    else if (items.walkAlarm) {
+        taskName = "walkAlarm";
+    }
+    else {
+        taskName = "";
+    }
+    return taskName;
 }
 
 })();
