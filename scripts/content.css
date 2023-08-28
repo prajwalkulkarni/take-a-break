@@ -1,4 +1,9 @@
-div.takeABreak__container{
+:root{
+  --content-spacing: 4px;
+  --line-heght: 1.5;
+}
+
+.takeABreak__container{
   position : fixed;
   top : 0;
   left : 0;
@@ -10,36 +15,49 @@ div.takeABreak__container{
   flex-direction : column;
   justify-content : center;
   align-items : center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-h1.takeABreak__title{
+.takeABreak__container > .takeABreak__title{
     color : #fff;
-    font-size : 5rem;
+    font-size : 80px;
+    font-weight: 600;
+    margin: var(--content-spacing);
+    line-height: var(--line-heght);
     text-align : center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.takeABreak__timer{
+.takeABreak__container > .takeABreak__timer{
     color : #fff;
-    font-size : 2rem;
+    font-size : 32px;
+    margin: var(--content-spacing);
+    line-height: var(--line-heght);
+    font-weight: 500;
     text-align : center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.takeABreak__task{
+.takeABreak__container > .takeABreak__task{
     color : #fff;
-    font-size : 2rem;
+    font-size : 32px;
+    margin: var(--content-spacing);
+    line-height: var(--line-heght);
     text-align : center;
+    font-weight: 400;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.takeABreak__dismiss{
+.takeABreak__container > .takeABreak__dismiss{
   color: #fff;
-  padding: 0.5rem;
+  padding: 8px;
   background-color: rgb(212, 127, 0);
   border-radius: 4px;
   border: none;
-  font-size: 1.5rem;
+  font-size: 24px;
   cursor: pointer;
 }
 
-.takeABreak__dismiss:hover{
+.takeABreak__container > .takeABreak__dismiss:hover{
   background-color: rgb(255, 153, 0);
 }

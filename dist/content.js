@@ -21,7 +21,12 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `div.takeABreak__container{
+___CSS_LOADER_EXPORT___.push([module.id, `:root{
+  --content-spacing: 4px;
+  --line-heght: 1.5;
+}
+
+.takeABreak__container{
   position : fixed;
   top : 0;
   left : 0;
@@ -33,40 +38,53 @@ ___CSS_LOADER_EXPORT___.push([module.id, `div.takeABreak__container{
   flex-direction : column;
   justify-content : center;
   align-items : center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-h1.takeABreak__title{
+.takeABreak__container > .takeABreak__title{
     color : #fff;
-    font-size : 5rem;
+    font-size : 80px;
+    font-weight: 600;
+    margin: var(--content-spacing);
+    line-height: var(--line-heght);
     text-align : center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.takeABreak__timer{
+.takeABreak__container > .takeABreak__timer{
     color : #fff;
-    font-size : 2rem;
+    font-size : 32px;
+    margin: var(--content-spacing);
+    line-height: var(--line-heght);
+    font-weight: 500;
     text-align : center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.takeABreak__task{
+.takeABreak__container > .takeABreak__task{
     color : #fff;
-    font-size : 2rem;
+    font-size : 32px;
+    margin: var(--content-spacing);
+    line-height: var(--line-heght);
     text-align : center;
+    font-weight: 400;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.takeABreak__dismiss{
+.takeABreak__container > .takeABreak__dismiss{
   color: #fff;
-  padding: 0.5rem;
+  padding: 8px;
   background-color: rgb(212, 127, 0);
   border-radius: 4px;
   border: none;
-  font-size: 1.5rem;
+  font-size: 24px;
   cursor: pointer;
 }
 
-.takeABreak__dismiss:hover{
+.takeABreak__container > .takeABreak__dismiss:hover{
   background-color: rgb(255, 153, 0);
 }
-`, "",{"version":3,"sources":["webpack://./scripts/content.css"],"names":[],"mappings":"AAAA;EACE,gBAAgB;EAChB,OAAO;EACP,QAAQ;EACR,YAAY;EACZ,aAAa;EACb,qCAAqC;EACrC,cAAc;EACd,cAAc;EACd,uBAAuB;EACvB,wBAAwB;EACxB,oBAAoB;AACtB;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,mBAAmB;AACvB;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,mBAAmB;AACvB;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,mBAAmB;AACvB;;AAEA;EACE,WAAW;EACX,eAAe;EACf,kCAAkC;EAClC,kBAAkB;EAClB,YAAY;EACZ,iBAAiB;EACjB,eAAe;AACjB;;AAEA;EACE,kCAAkC;AACpC","sourcesContent":["div.takeABreak__container{\r\n  position : fixed;\r\n  top : 0;\r\n  left : 0;\r\n  width : 100%;\r\n  height : 100%;\r\n  background-color : rgba(0, 0, 0, 0.5);\r\n  z-index : 9999;\r\n  display : flex;\r\n  flex-direction : column;\r\n  justify-content : center;\r\n  align-items : center;\r\n}\r\n\r\nh1.takeABreak__title{\r\n    color : #fff;\r\n    font-size : 5rem;\r\n    text-align : center;\r\n}\r\n\r\n.takeABreak__timer{\r\n    color : #fff;\r\n    font-size : 2rem;\r\n    text-align : center;\r\n}\r\n\r\n.takeABreak__task{\r\n    color : #fff;\r\n    font-size : 2rem;\r\n    text-align : center;\r\n}\r\n\r\n.takeABreak__dismiss{\r\n  color: #fff;\r\n  padding: 0.5rem;\r\n  background-color: rgb(212, 127, 0);\r\n  border-radius: 4px;\r\n  border: none;\r\n  font-size: 1.5rem;\r\n  cursor: pointer;\r\n}\r\n\r\n.takeABreak__dismiss:hover{\r\n  background-color: rgb(255, 153, 0);\r\n}\r\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./scripts/content.css"],"names":[],"mappings":"AAAA;EACE,sBAAsB;EACtB,iBAAiB;AACnB;;AAEA;EACE,gBAAgB;EAChB,OAAO;EACP,QAAQ;EACR,YAAY;EACZ,aAAa;EACb,qCAAqC;EACrC,cAAc;EACd,cAAc;EACd,uBAAuB;EACvB,wBAAwB;EACxB,oBAAoB;EACpB,yCAAyC;AAC3C;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,mBAAmB;IACnB,yCAAyC;AAC7C;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,gBAAgB;IAChB,mBAAmB;IACnB,yCAAyC;AAC7C;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,mBAAmB;IACnB,gBAAgB;IAChB,yCAAyC;AAC7C;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,kCAAkC;EAClC,kBAAkB;EAClB,YAAY;EACZ,eAAe;EACf,eAAe;AACjB;;AAEA;EACE,kCAAkC;AACpC","sourcesContent":[":root{\r\n  --content-spacing: 4px;\r\n  --line-heght: 1.5;\r\n}\r\n\r\n.takeABreak__container{\r\n  position : fixed;\r\n  top : 0;\r\n  left : 0;\r\n  width : 100%;\r\n  height : 100%;\r\n  background-color : rgba(0, 0, 0, 0.5);\r\n  z-index : 9999;\r\n  display : flex;\r\n  flex-direction : column;\r\n  justify-content : center;\r\n  align-items : center;\r\n  font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__title{\r\n    color : #fff;\r\n    font-size : 80px;\r\n    font-weight: 600;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    text-align : center;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__timer{\r\n    color : #fff;\r\n    font-size : 32px;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    font-weight: 500;\r\n    text-align : center;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__task{\r\n    color : #fff;\r\n    font-size : 32px;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    text-align : center;\r\n    font-weight: 400;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__dismiss{\r\n  color: #fff;\r\n  padding: 8px;\r\n  background-color: rgb(212, 127, 0);\r\n  border-radius: 4px;\r\n  border: none;\r\n  font-size: 24px;\r\n  cursor: pointer;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__dismiss:hover{\r\n  background-color: rgb(255, 153, 0);\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
