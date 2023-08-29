@@ -620,7 +620,6 @@ chrome.storage.local.get(["breakAlarm", "walkAlarm", "waterAlarm"], (items) => {
     if (window.location.href.startsWith("http") ||
         window.location.href.startsWith("https")) {
         // const body = document.querySelector('body');
-        console.log(task, interval);
         const checkIfTakeABreakContainerExists = document.querySelector(".takeABreak__container");
         if (checkIfTakeABreakContainerExists) {
             const h2 = document.querySelector(".takeABreak__task");

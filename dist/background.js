@@ -32,14 +32,22 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     console.log("Fired", alarm.name);
     //   if (alarm.name === "breakAlarm") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => __awaiter(void 0, void 0, void 0, function* () {
-        // chrome.tabs.sendMessage(tabs[0].id!, { message: "breakTime" });
         //Execute content script when the alarm fires
         if (tabs.length > 0) {
             console.count("Script executed");
             chrome.storage.local.set({ [alarm.name]: true });
-            chrome.scripting.executeScript({
+            chrome.scripting
+                .executeScript({
                 target: { tabId: tabs[0].id },
                 files: ["dist/content.js"],
+            })
+                .then(() => {
+                chrome.notifications.create({
+                    type: "basic",
+                    iconUrl: "../images/favicon-16x16.png",
+                    title: "Take a break",
+                    message: "It's time to take a break",
+                });
             });
         }
     }));
@@ -48,7 +56,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 function createOrUpdateAlarms() {
     chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
         const { timeout, water, walk } = items;
-        console.log(timeout, water, walk);
         chrome.alarms.clearAll();
         if (timeout) {
             chrome.alarms.create("breakAlarm", {

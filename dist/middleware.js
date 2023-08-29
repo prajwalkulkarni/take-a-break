@@ -64,6 +64,30 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ../popup/popup.css */ "./popup/popup.css");
 const form = document.querySelector("form");
+const timeoutInput = document.querySelector("#timeout");
+const waterInput = document.querySelector("#water");
+const walkInput = document.querySelector("#walk");
+chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
+    const { timeout, water, walk } = items;
+    timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.setAttribute("value", (timeout === null || timeout === void 0 ? void 0 : timeout.toString()) || "0");
+    waterInput === null || waterInput === void 0 ? void 0 : waterInput.setAttribute("value", (water === null || water === void 0 ? void 0 : water.toString()) || "0");
+    walkInput === null || walkInput === void 0 ? void 0 : walkInput.setAttribute("value", (walk === null || walk === void 0 ? void 0 : walk.toString()) || "0");
+});
+timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.addEventListener("input", (e) => {
+    //Update the label with the current slider value
+    const label = document.querySelector("#timeoutLabel");
+    label.textContent = `Look away from screen - ${e.target.value} minutes`;
+});
+waterInput === null || waterInput === void 0 ? void 0 : waterInput.addEventListener("input", (e) => {
+    //Update the label with the current slider value
+    const label = document.querySelector("#waterLabel");
+    label.textContent = `Drink water - ${e.target.value} minutes`;
+});
+walkInput === null || walkInput === void 0 ? void 0 : walkInput.addEventListener("input", (e) => {
+    //Update the label with the current slider value
+    const label = document.querySelector("#walkLabel");
+    label.textContent = `Walk - ${e.target.value} minutes`;
+});
 form === null || form === void 0 ? void 0 : form.addEventListener("submit", (e) => {
     e.preventDefault();
     e.stopPropagation();

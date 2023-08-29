@@ -8,7 +8,6 @@ chrome.storage.local.get(["breakAlarm", "walkAlarm", "waterAlarm"], (items) => {
     window.location.href.startsWith("https")
   ) {
     // const body = document.querySelector('body');
-    console.log(task, interval);
     const checkIfTakeABreakContainerExists = document.querySelector(
       ".takeABreak__container"
     );
