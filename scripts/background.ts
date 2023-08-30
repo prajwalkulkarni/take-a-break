@@ -1,3 +1,5 @@
+import { Alarms } from "./types";
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (typeof message === "object") {
     Object.entries(message).forEach(([key, value]) => {
@@ -41,21 +43,21 @@ function createOrUpdateAlarms() {
     chrome.alarms.clearAll();
 
     if (timeout) {
-      chrome.alarms.create("breakAlarm", {
+      chrome.alarms.create(Alarms.ScreenBreak, {
         delayInMinutes: timeout,
         periodInMinutes: timeout,
       });
     }
 
     if (water) {
-      chrome.alarms.create("waterAlarm", {
+      chrome.alarms.create(Alarms.Water, {
         delayInMinutes: water,
         periodInMinutes: water,
       });
     }
 
     if (walk) {
-      chrome.alarms.create("walkAlarm", {
+      chrome.alarms.create(Alarms.Walk, {
         delayInMinutes: walk,
         periodInMinutes: walk,
       });

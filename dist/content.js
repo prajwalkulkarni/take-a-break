@@ -529,6 +529,25 @@ function styleTagTransform(css, styleElement) {
 }
 module.exports = styleTagTransform;
 
+/***/ }),
+
+/***/ "./scripts/types.ts":
+/*!**************************!*\
+  !*** ./scripts/types.ts ***!
+  \**************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Alarms = void 0;
+var Alarms;
+(function (Alarms) {
+    Alarms["Water"] = "WATER";
+    Alarms["Walk"] = "WALK";
+    Alarms["ScreenBreak"] = "SCREEN_BREAK";
+})(Alarms || (exports.Alarms = Alarms = {}));
+
+
 /***/ })
 
 /******/ 	});
@@ -614,9 +633,11 @@ var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ./content.css */ "./scripts/content.css");
-chrome.storage.local.get(["breakAlarm", "walkAlarm", "waterAlarm"], (items) => {
+const types_1 = __webpack_require__(/*! ./types */ "./scripts/types.ts");
+chrome.storage.local.get([types_1.Alarms.ScreenBreak, types_1.Alarms.Walk, types_1.Alarms.Water], (items) => {
     const taskName = getTaskName(items);
     const [task, interval] = getMessageAndInterval(taskName);
+    console.log(items);
     if (window.location.href.startsWith("http") ||
         window.location.href.startsWith("https")) {
         // const body = document.querySelector('body');
@@ -666,16 +687,20 @@ chrome.storage.local.get(["breakAlarm", "walkAlarm", "waterAlarm"], (items) => {
                 timer = interval;
             }, interval);
         }
-        chrome.storage.local.remove(["breakAlarm", "waterAlarm", "walkAlarm"]);
+        chrome.storage.local.remove([
+            types_1.Alarms.ScreenBreak,
+            types_1.Alarms.Water,
+            types_1.Alarms.Walk,
+        ]);
     }
 });
 function getMessageAndInterval(alarmName) {
     switch (alarmName) {
-        case "breakAlarm":
+        case types_1.Alarms.ScreenBreak:
             return ["To Look At Something 20 Feet Away For 20 Seconds", 20000];
-        case "waterAlarm":
+        case types_1.Alarms.Water:
             return ["And Drink A Glass Of Water", 60000];
-        case "walkAlarm":
+        case types_1.Alarms.Walk:
         case "breakAndWalkAlarm":
             return ["To Stretch And Walk Around For 2 Minutes", 120000];
         case "breakAndWaterAlarm":
@@ -691,23 +716,23 @@ function getMessageAndInterval(alarmName) {
 }
 function getTaskName(items) {
     let taskName;
-    if (items.breakAlarm && items.waterAlarm && items.walkAlarm) {
+    if (items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water] && items[types_1.Alarms.Walk]) {
         taskName = "breakAndWaterAndWalkAlarm";
     }
-    else if (items.breakAlarm && items.waterAlarm) {
+    else if (items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water]) {
         taskName = "breakAndWaterAlarm";
     }
-    else if (items.breakAlarm && items.walkAlarm) {
+    else if (items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Walk]) {
         taskName = "breakAndWalkAlarm";
     }
-    else if (items.breakAlarm) {
-        taskName = "breakAlarm";
+    else if (items[types_1.Alarms.ScreenBreak]) {
+        taskName = types_1.Alarms.ScreenBreak;
     }
-    else if (items.waterAlarm) {
-        taskName = "waterAlarm";
+    else if (items[types_1.Alarms.Water]) {
+        taskName = types_1.Alarms.Water;
     }
-    else if (items.walkAlarm) {
-        taskName = "walkAlarm";
+    else if (items[types_1.Alarms.Walk]) {
+        taskName = types_1.Alarms.Walk;
     }
     else {
         taskName = "";
