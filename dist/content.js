@@ -694,50 +694,42 @@ chrome.storage.local.get([types_1.Alarms.ScreenBreak, types_1.Alarms.Walk, types
         ]);
     }
 });
+const map = new Map();
+map.set(types_1.Alarms.ScreenBreak, [
+    "To Look At Something 20 Feet Away For 20 Seconds",
+    20000,
+]);
+map.set(types_1.Alarms.Water, ["And Drink A Glass Of Water", 60000]);
+map.set(types_1.Alarms.Walk, ["To Stretch And Walk Around For 2 Minutes", 120000]);
+map.set("walkAndWalkAlarm", map.get(types_1.Alarms.Walk));
+map.set("breakAndWaterAlarm", [
+    "To Drink a Glass of water and look away from the screen",
+    80000,
+]);
+map.set("breakAndWaterAndWalkAlarm", [
+    "Time to drink a glass of water, look away from the screen and take a short walk",
+    180000,
+]);
 function getMessageAndInterval(alarmName) {
-    switch (alarmName) {
-        case types_1.Alarms.ScreenBreak:
-            return ["To Look At Something 20 Feet Away For 20 Seconds", 20000];
-        case types_1.Alarms.Water:
-            return ["And Drink A Glass Of Water", 60000];
-        case types_1.Alarms.Walk:
-        case "breakAndWalkAlarm":
-            return ["To Stretch And Walk Around For 2 Minutes", 120000];
-        case "breakAndWaterAlarm":
-            return ["To Drink a Glass of water and look away from the screen", 80000];
-        case "breakAndWaterAndWalkAlarm":
-            return [
-                "Time to drink a glass of water, look away from the screen and take a short walk",
-                180000,
-            ];
-        default:
-            return ["", 0];
+    if (map.has(alarmName)) {
+        return map.get(alarmName);
     }
+    return ["", 0];
 }
 function getTaskName(items) {
-    let taskName;
-    if (items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water] && items[types_1.Alarms.Walk]) {
-        taskName = "breakAndWaterAndWalkAlarm";
+    const alarms = Object.keys(items);
+    if (alarms.length === 3) {
+        return "breakAndWaterAndWalkAlarm";
     }
-    else if (items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water]) {
-        taskName = "breakAndWaterAlarm";
-    }
-    else if (items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Walk]) {
-        taskName = "breakAndWalkAlarm";
-    }
-    else if (items[types_1.Alarms.ScreenBreak]) {
-        taskName = types_1.Alarms.ScreenBreak;
-    }
-    else if (items[types_1.Alarms.Water]) {
-        taskName = types_1.Alarms.Water;
-    }
-    else if (items[types_1.Alarms.Walk]) {
-        taskName = types_1.Alarms.Walk;
+    else if (alarms.length === 2) {
+        return items[types_1.Alarms.ScreenBreak] &&
+            (items[types_1.Alarms.Water] || items[types_1.Alarms.Walk])
+            ? "breakAndWaterAlarm"
+            : "waterAndWalkAlarm";
     }
     else {
-        taskName = "";
+        return alarms[0];
     }
-    return taskName;
 }
 
 })();

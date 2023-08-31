@@ -76,43 +76,41 @@ chrome.storage.local.get(
   }
 );
 
+const map = new Map();
+map.set(Alarms.ScreenBreak, [
+  "To Look At Something 20 Feet Away For 20 Seconds",
+  20000,
+]);
+map.set(Alarms.Water, ["And Drink A Glass Of Water", 60000]);
+map.set(Alarms.Walk, ["To Stretch And Walk Around For 2 Minutes", 120000]);
+map.set("walkAndWalkAlarm", map.get(Alarms.Walk));
+map.set("breakAndWaterAlarm", [
+  "To Drink a Glass of water and look away from the screen",
+  80000,
+]);
+map.set("breakAndWaterAndWalkAlarm", [
+  "Time to drink a glass of water, look away from the screen and take a short walk",
+  180000,
+]);
+
 function getMessageAndInterval(alarmName: string): [string, number] {
-  switch (alarmName) {
-    case Alarms.ScreenBreak:
-      return ["To Look At Something 20 Feet Away For 20 Seconds", 20000];
-    case Alarms.Water:
-      return ["And Drink A Glass Of Water", 60000];
-    case Alarms.Walk:
-    case "breakAndWalkAlarm":
-      return ["To Stretch And Walk Around For 2 Minutes", 120000];
-    case "breakAndWaterAlarm":
-      return ["To Drink a Glass of water and look away from the screen", 80000];
-    case "breakAndWaterAndWalkAlarm":
-      return [
-        "Time to drink a glass of water, look away from the screen and take a short walk",
-        180000,
-      ];
-    default:
-      return ["", 0];
+  if (map.has(alarmName)) {
+    return map.get(alarmName);
   }
+  return ["", 0];
 }
 
 function getTaskName(items: { [key: string]: boolean }) {
-  let taskName;
-  if (items[Alarms.ScreenBreak] && items[Alarms.Water] && items[Alarms.Walk]) {
-    taskName = "breakAndWaterAndWalkAlarm";
-  } else if (items[Alarms.ScreenBreak] && items[Alarms.Water]) {
-    taskName = "breakAndWaterAlarm";
-  } else if (items[Alarms.ScreenBreak] && items[Alarms.Walk]) {
-    taskName = "breakAndWalkAlarm";
-  } else if (items[Alarms.ScreenBreak]) {
-    taskName = Alarms.ScreenBreak;
-  } else if (items[Alarms.Water]) {
-    taskName = Alarms.Water;
-  } else if (items[Alarms.Walk]) {
-    taskName = Alarms.Walk;
+  const alarms = Object.keys(items);
+
+  if (alarms.length === 3) {
+    return "breakAndWaterAndWalkAlarm";
+  } else if (alarms.length === 2) {
+    return items[Alarms.ScreenBreak] &&
+      (items[Alarms.Water] || items[Alarms.Walk])
+      ? "breakAndWaterAlarm"
+      : "waterAndWalkAlarm";
   } else {
-    taskName = "";
+    return alarms[0];
   }
-  return taskName;
 }
