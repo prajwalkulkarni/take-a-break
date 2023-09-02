@@ -11,7 +11,7 @@ chrome.storage.local.get(
     const [task, interval, animation] =
       getMessageAndIntervalAndAnimation(taskName);
 
-    console.log(items);
+    console.log();
     if (
       window.location.href.startsWith("http") ||
       window.location.href.startsWith("https")
