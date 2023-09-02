@@ -26,7 +26,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
         .then(() => {
           chrome.notifications.create({
             type: "basic",
-            iconUrl: "../images/favicon-16x16.png",
+            iconUrl: "../assets/images/favicon-16x16.png",
             title: "Take a break",
             message: "It's time to take a break",
           });

@@ -1,11 +1,15 @@
 import "./content.css";
 import { Alarms } from "./types";
-
+import lottie from "lottie-web";
+import waterAnimation from "../assets/lottiefiles/water.json";
+import stretchAnimation from "../assets/lottiefiles/stretch.json";
+import lookAwayAnimation from "../assets/lottiefiles/break.json";
 chrome.storage.local.get(
   [Alarms.ScreenBreak, Alarms.Walk, Alarms.Water],
   (items) => {
     const taskName = getTaskName(items);
-    const [task, interval] = getMessageAndInterval(taskName);
+    const [task, interval, animation] =
+      getMessageAndIntervalAndAnimation(taskName);
 
     console.log(items);
     if (
@@ -19,12 +23,33 @@ chrome.storage.local.get(
       if (checkIfTakeABreakContainerExists) {
         const h2 = document.querySelector(".takeABreak__task");
         h2?.textContent && (h2.textContent = task);
+        const lottieContainer = document.querySelector(
+          "takeABreak__lottie"
+        ) as Element;
+        lottie.loadAnimation({
+          container: lottieContainer,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          animationData: animation,
+        });
         const h3 = document.querySelector(".takeABreak__timer");
         const timer = interval;
         h3 && (h3.textContent = `You can continue in ${timer / 1000} seconds`);
       } else {
         const div = document.createElement("div");
         div.className = "takeABreak__container";
+
+        const lottieContainer = document.createElement("div");
+        lottieContainer.className = "takeABreak__lottie";
+        lottie.loadAnimation({
+          container: lottieContainer,
+          renderer: "svg",
+          loop: true,
+          autoplay: true,
+          animationData: animation,
+        });
+
         const h1 = document.createElement("h1");
         h1.className = "takeABreak__title";
         h1.textContent = "Take a break";
@@ -47,6 +72,7 @@ chrome.storage.local.get(
           timer = interval;
         });
 
+        div.appendChild(lottieContainer);
         div.appendChild(h1);
         div.appendChild(h2);
         div.appendChild(h3);
@@ -80,24 +106,31 @@ const map = new Map();
 map.set(Alarms.ScreenBreak, [
   "To Look At Something 20 Feet Away For 20 Seconds",
   20000,
+  lookAwayAnimation,
 ]);
-map.set(Alarms.Water, ["And Drink A Glass Of Water", 60000]);
-map.set(Alarms.Walk, ["To Stretch And Walk Around For 2 Minutes", 120000]);
+map.set(Alarms.Water, ["And Drink A Glass Of Water", 60000, waterAnimation]);
+map.set(Alarms.Walk, [
+  "To Stretch And Walk Around For 2 Minutes",
+  120000,
+  stretchAnimation,
+]);
 map.set("walkAndWalkAlarm", map.get(Alarms.Walk));
 map.set("breakAndWaterAlarm", [
   "To Drink a Glass of water and look away from the screen",
   80000,
+  waterAnimation,
 ]);
 map.set("breakAndWaterAndWalkAlarm", [
   "Time to drink a glass of water, look away from the screen and take a short walk",
   180000,
+  stretchAnimation,
 ]);
 
-function getMessageAndInterval(alarmName: string): [string, number] {
+function getMessageAndIntervalAndAnimation(alarmName: string) {
   if (map.has(alarmName)) {
     return map.get(alarmName);
   }
-  return ["", 0];
+  return ["", 0, undefined];
 }
 
 function getTaskName(items: { [key: string]: boolean }) {
@@ -114,3 +147,5 @@ function getTaskName(items: { [key: string]: boolean }) {
     return alarms[0];
   }
 }
+
+//Write a function that generates JSON for lottie animation of a person doing body stretching at office

@@ -18,6 +18,11 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.takeABreak__lottie{
+  width : 200px;
+  height : 200px;
+  margin: var(--content-spacing);
+}
 .takeABreak__container > .takeABreak__title{
     color : #fff;
     font-size : 80px;
