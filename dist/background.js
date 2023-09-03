@@ -35,7 +35,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => __awaiter(void 0, void 0, void 0, function* () {
         //Execute content script when the alarm fires
         if (tabs.length > 0) {
-            console.count("Script executed");
             chrome.storage.local.set({ [alarm.name]: true });
             chrome.scripting
                 .executeScript({
@@ -43,11 +42,15 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                 files: ["dist/content.js"],
             })
                 .then(() => {
-                chrome.notifications.create({
-                    type: "basic",
-                    iconUrl: "../assets/images/favicon-16x16.png",
-                    title: "Take a break",
-                    message: "It's time to take a break",
+                chrome.storage.local.get("showNotifications", (items) => {
+                    if (items.showNotification) {
+                        chrome.notifications.create({
+                            type: "basic",
+                            iconUrl: "../assets/images/favicon-16x16.png",
+                            title: "Take a break",
+                            message: "It's time to take a break",
+                        });
+                    }
                 });
             });
         }

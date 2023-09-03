@@ -3,13 +3,28 @@ const form = document.querySelector("form");
 const timeoutInput = document.querySelector("#timeout");
 const waterInput = document.querySelector("#water");
 const walkInput = document.querySelector("#walk");
-chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
-  const { timeout, water, walk } = items;
 
-  timeoutInput?.setAttribute("value", timeout?.toString() || "0");
-  waterInput?.setAttribute("value", water?.toString() || "0");
-  walkInput?.setAttribute("value", walk?.toString() || "0");
-});
+const timeoutLabel = document.querySelector("#timeoutLabel");
+const waterLabel = document.querySelector("#waterLabel");
+const walkLabel = document.querySelector("#walkLabel");
+const notifications = document.querySelector("#notifications");
+
+chrome.storage.local.get(
+  ["timeout", "water", "walk", "showNotifications"],
+  (items) => {
+    const { timeout, water, walk } = items;
+
+    timeoutInput?.setAttribute("value", timeout?.toString() || "0");
+    waterInput?.setAttribute("value", water?.toString() || "0");
+    walkInput?.setAttribute("value", walk?.toString() || "0");
+
+    timeoutLabel!.textContent = `Look away from screen - ${timeout} minutes`;
+    waterLabel!.textContent = `Drink water - ${water} minutes`;
+    walkLabel!.textContent = `Stretch/Stroll - ${walk} minutes`;
+
+    (notifications as HTMLInputElement).checked = items.showNotifications;
+  }
+);
 
 timeoutInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
@@ -43,6 +58,7 @@ form?.addEventListener("submit", (e) => {
   const timeout = parseInt(formData.get("timeout") as string);
   const water = parseInt(formData.get("water") as string);
   const walk = parseInt(formData.get("walk") as string);
+  const showNotifications = formData.get("notifications") === "on";
 
-  chrome.runtime.sendMessage({ timeout, water, walk });
+  chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
 });

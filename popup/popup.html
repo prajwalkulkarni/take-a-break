@@ -7,13 +7,21 @@
     <h1>Take a break</h1>
 
     <form name="intervals" id="timeoutIntervals">
-      <label for="timeout" id="timeoutLabel">Look away from screen</label>
-      <input type="range" id="timeout" name="timeout" value="20" min="1" max="60" step="1" /><br>
-      <label for="water" id="waterLabel">Drink water</label>
-      <input type="range" id="water" name="water" value="60" min="2" max="120" step="1" /><br>
-      <label for="walk" id="walkLabel">Take a walk</label>
-      <input type="range" id="walk" name="walk" value="45" min="30" max="180" step="10" /><br>
+      <label for="timeout" id="timeoutLabel">Look away from screen - 20 minutes</label>
+      <input type="range" id="timeout" name="timeout" value="20" min="10" max="60" step="5" /><br>
+      <label for="water" id="waterLabel">Drink water - 90 minutes</label>
+      <input type="range" id="water" name="water" value="90" min="45" max="120" step="5" /><br>
+      <label for="walk" id="walkLabel">Stretch/Stroll - 120 minutes</label>
+      <input type="range" id="walk" name="walk" value="120" min="30" max="180" step="10" /><br>
 
+      <div class="notifications-container">
+        <input type="checkbox" id="notifications" name="notifications"/>
+        <label for="notifications">
+          
+        </label>
+        <span>Enable notifications</span>
+      </div>
+      
       <input type="submit" value="Submit" />
     </form>
 

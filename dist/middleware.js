@@ -67,11 +67,19 @@ const form = document.querySelector("form");
 const timeoutInput = document.querySelector("#timeout");
 const waterInput = document.querySelector("#water");
 const walkInput = document.querySelector("#walk");
-chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
+const timeoutLabel = document.querySelector("#timeoutLabel");
+const waterLabel = document.querySelector("#waterLabel");
+const walkLabel = document.querySelector("#walkLabel");
+const notifications = document.querySelector("#notifications");
+chrome.storage.local.get(["timeout", "water", "walk", "showNotifications"], (items) => {
     const { timeout, water, walk } = items;
     timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.setAttribute("value", (timeout === null || timeout === void 0 ? void 0 : timeout.toString()) || "0");
     waterInput === null || waterInput === void 0 ? void 0 : waterInput.setAttribute("value", (water === null || water === void 0 ? void 0 : water.toString()) || "0");
     walkInput === null || walkInput === void 0 ? void 0 : walkInput.setAttribute("value", (walk === null || walk === void 0 ? void 0 : walk.toString()) || "0");
+    timeoutLabel.textContent = `Look away from screen - ${timeout} minutes`;
+    waterLabel.textContent = `Drink water - ${water} minutes`;
+    walkLabel.textContent = `Stretch/Stroll - ${walk} minutes`;
+    notifications.checked = items.showNotifications;
 });
 timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.addEventListener("input", (e) => {
     //Update the label with the current slider value
@@ -96,7 +104,8 @@ form === null || form === void 0 ? void 0 : form.addEventListener("submit", (e) 
     const timeout = parseInt(formData.get("timeout"));
     const water = parseInt(formData.get("water"));
     const walk = parseInt(formData.get("walk"));
-    chrome.runtime.sendMessage({ timeout, water, walk });
+    const showNotifications = formData.get("notifications") === "on";
+    chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
 });
 
 })();
