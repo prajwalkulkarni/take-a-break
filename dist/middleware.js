@@ -105,6 +105,18 @@ form === null || form === void 0 ? void 0 : form.addEventListener("submit", (e) 
     const water = parseInt(formData.get("water"));
     const walk = parseInt(formData.get("walk"));
     const showNotifications = formData.get("notifications") === "on";
+    const submitButton = document.querySelector("button");
+    //Animate button on click
+    submitButton === null || submitButton === void 0 ? void 0 : submitButton.classList.add("takeABreak__button--animate");
+    //Remove animation class after 1 second
+    const animationTimeout = setTimeout(() => {
+        submitButton === null || submitButton === void 0 ? void 0 : submitButton.classList.remove("takeABreak__button--animate");
+        submitButton === null || submitButton === void 0 ? void 0 : submitButton.classList.add("takeAbreak__validate");
+        clearTimeout(animationTimeout);
+    }, 2250);
+    setTimeout(() => {
+        submitButton === null || submitButton === void 0 ? void 0 : submitButton.classList.remove("takeAbreak__validate");
+    }, 3350);
     chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
 });
 

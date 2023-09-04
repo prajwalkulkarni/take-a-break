@@ -1,3 +1,7 @@
+:root{
+    --color-primary: #2589BD;
+}
+
 body{
     width: 300px;
     height: 320px;
@@ -66,7 +70,7 @@ form{
 }
 
 .notifications-container input[type="checkbox"]:checked + label{
-    background-color: #2589BD;
+    background-color: var(--color-primary);
 }
 
 .notifications-container input[type="checkbox"]:checked + label:after{
@@ -80,15 +84,15 @@ form{
 
 
 
-input[type="submit"],input[type="range"]{
+button,input[type="range"]{
     width: 100%;
 }
 
-input[type="submit"]{
+button{
     height: 40px;
     padding: 10px;
-    background-color: #2589BD;
-    font-size: large;
+    background-color: var(--color-primary);
+    font-size: medium;
     font-weight: 500;
     color: #fff;
     border: none;
@@ -96,6 +100,44 @@ input[type="submit"]{
     cursor: pointer;
 }
 
-input[type="submit"]:hover{
+button::after{
+    content:"Submit"
+}
+button:hover{
     background-color: #1c75a5;
+}
+
+.takeABreak__button--animate{
+    margin: auto;
+    width: 40px;
+    border-style: solid;
+    border-color:lightgray; 
+    border-width:3px;
+    font-size:0;
+    border-radius: 50%;
+    border-left-color:var(--color-primary);
+    background-color: white;
+    animation: submit-animation 1s 0.25s ease-in-out infinite;
+}
+.takeABreak__button--animate:hover{
+    background-color: white;
+}
+
+.takeABreak__validate{
+  font-size:medium;
+  color: white;
+  background: var(--color-primary);
+}
+
+.takeABreak__validate::after{
+    content:"Done";
+}
+
+@keyframes submit-animation{
+    from{
+        transform: rotate(0deg)
+    }
+    to{
+        transform: rotate(360deg)
+    }
 }

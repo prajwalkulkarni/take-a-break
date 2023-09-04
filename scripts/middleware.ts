@@ -60,5 +60,21 @@ form?.addEventListener("submit", (e) => {
   const walk = parseInt(formData.get("walk") as string);
   const showNotifications = formData.get("notifications") === "on";
 
+  const submitButton = document.querySelector("button");
+
+  //Animate button on click
+  submitButton?.classList.add("takeABreak__button--animate");
+
+  //Remove animation class after 1 second
+  const animationTimeout = setTimeout(() => {
+    submitButton?.classList.remove("takeABreak__button--animate");
+    submitButton?.classList.add("takeAbreak__validate");
+    clearTimeout(animationTimeout);
+  }, 2250);
+
+  setTimeout(() => {
+    submitButton?.classList.remove("takeAbreak__validate");
+  }, 3350);
+
   chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
 });
