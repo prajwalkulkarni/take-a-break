@@ -72,13 +72,15 @@ const waterLabel = document.querySelector("#waterLabel");
 const walkLabel = document.querySelector("#walkLabel");
 const notifications = document.querySelector("#notifications");
 chrome.storage.local.get(["timeout", "water", "walk", "showNotifications"], (items) => {
+    var _a, _b, _c;
     const { timeout, water, walk } = items;
-    timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.setAttribute("value", (timeout === null || timeout === void 0 ? void 0 : timeout.toString()) || "0");
-    waterInput === null || waterInput === void 0 ? void 0 : waterInput.setAttribute("value", (water === null || water === void 0 ? void 0 : water.toString()) || "0");
-    walkInput === null || walkInput === void 0 ? void 0 : walkInput.setAttribute("value", (walk === null || walk === void 0 ? void 0 : walk.toString()) || "0");
-    timeoutLabel.textContent = `Look away from screen - ${timeout} minutes`;
-    waterLabel.textContent = `Drink water - ${water} minutes`;
-    walkLabel.textContent = `Stretch/Stroll - ${walk} minutes`;
+    console.log(timeout, timeout === null || timeout === void 0 ? void 0 : timeout.toString());
+    timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.setAttribute("value", (_a = timeout === null || timeout === void 0 ? void 0 : timeout.toString()) !== null && _a !== void 0 ? _a : "20");
+    waterInput === null || waterInput === void 0 ? void 0 : waterInput.setAttribute("value", (_b = water === null || water === void 0 ? void 0 : water.toString()) !== null && _b !== void 0 ? _b : "120");
+    walkInput === null || walkInput === void 0 ? void 0 : walkInput.setAttribute("value", (_c = walk === null || walk === void 0 ? void 0 : walk.toString()) !== null && _c !== void 0 ? _c : "45");
+    timeoutLabel.textContent = `Look away from screen - ${timeout !== null && timeout !== void 0 ? timeout : "20"} minutes`;
+    waterLabel.textContent = `Drink water - ${water !== null && water !== void 0 ? water : "120"} minutes`;
+    walkLabel.textContent = `Stretch/Stroll - ${walk !== null && walk !== void 0 ? walk : "45"} minutes`;
     notifications.checked = items.showNotifications;
 });
 timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.addEventListener("input", (e) => {
@@ -110,13 +112,19 @@ form === null || form === void 0 ? void 0 : form.addEventListener("submit", (e) 
     submitButton === null || submitButton === void 0 ? void 0 : submitButton.classList.add("takeABreak__button--animate");
     //Remove animation class after 1 second
     const animationTimeout = setTimeout(() => {
-        submitButton === null || submitButton === void 0 ? void 0 : submitButton.classList.remove("takeABreak__button--animate");
-        submitButton === null || submitButton === void 0 ? void 0 : submitButton.classList.add("takeAbreak__validate");
+        if (submitButton) {
+            submitButton.classList.remove("takeABreak__button--animate");
+            submitButton.classList.add("takeAbreak__validate");
+            submitButton.disabled = true;
+        }
         clearTimeout(animationTimeout);
-    }, 2250);
+    }, 1250);
     setTimeout(() => {
-        submitButton === null || submitButton === void 0 ? void 0 : submitButton.classList.remove("takeAbreak__validate");
-    }, 3350);
+        if (submitButton) {
+            submitButton.classList.remove("takeAbreak__validate");
+            submitButton.disabled = false;
+        }
+    }, 2350);
     chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
 });
 

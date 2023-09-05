@@ -13,14 +13,17 @@ chrome.storage.local.get(
   ["timeout", "water", "walk", "showNotifications"],
   (items) => {
     const { timeout, water, walk } = items;
+    console.log(timeout, timeout?.toString());
 
-    timeoutInput?.setAttribute("value", timeout?.toString() || "0");
-    waterInput?.setAttribute("value", water?.toString() || "0");
-    walkInput?.setAttribute("value", walk?.toString() || "0");
+    timeoutInput?.setAttribute("value", timeout?.toString() ?? "20");
+    waterInput?.setAttribute("value", water?.toString() ?? "120");
+    walkInput?.setAttribute("value", walk?.toString() ?? "45");
 
-    timeoutLabel!.textContent = `Look away from screen - ${timeout} minutes`;
-    waterLabel!.textContent = `Drink water - ${water} minutes`;
-    walkLabel!.textContent = `Stretch/Stroll - ${walk} minutes`;
+    timeoutLabel!.textContent = `Look away from screen - ${
+      timeout ?? "20"
+    } minutes`;
+    waterLabel!.textContent = `Drink water - ${water ?? "120"} minutes`;
+    walkLabel!.textContent = `Stretch/Stroll - ${walk ?? "45"} minutes`;
 
     (notifications as HTMLInputElement).checked = items.showNotifications;
   }
@@ -67,14 +70,20 @@ form?.addEventListener("submit", (e) => {
 
   //Remove animation class after 1 second
   const animationTimeout = setTimeout(() => {
-    submitButton?.classList.remove("takeABreak__button--animate");
-    submitButton?.classList.add("takeAbreak__validate");
+    if (submitButton) {
+      submitButton.classList.remove("takeABreak__button--animate");
+      submitButton.classList.add("takeAbreak__validate");
+      submitButton.disabled = true;
+    }
     clearTimeout(animationTimeout);
-  }, 2250);
+  }, 1250);
 
   setTimeout(() => {
-    submitButton?.classList.remove("takeAbreak__validate");
-  }, 3350);
+    if (submitButton) {
+      submitButton.classList.remove("takeAbreak__validate");
+      submitButton.disabled = false;
+    }
+  }, 2350);
 
   chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
 });

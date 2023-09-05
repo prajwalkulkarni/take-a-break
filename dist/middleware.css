@@ -3,6 +3,7 @@
   \*******************************************************************/
 :root{
     --color-primary: #2589BD;
+    --color-success: #52c41a;
 }
 
 body{
@@ -120,6 +121,7 @@ button:hover{
     border-radius: 50%;
     border-left-color:var(--color-primary);
     background-color: white;
+    transition: all 0.1s ease-in-out;
     animation: submit-animation 1s 0.25s ease-in-out infinite;
 }
 .takeABreak__button--animate:hover{
@@ -129,11 +131,16 @@ button:hover{
 .takeABreak__validate{
   font-size:medium;
   color: white;
-  background: var(--color-primary);
+  background: var(--color-success);
+  transition: background-color 0.5s ease-in;
 }
 
+.takeABreak__validate:hover{
+    background-color: var(--color-success);
+  }
+
 .takeABreak__validate::after{
-    content:"Done";
+    content:"Settings saved";
 }
 
 @keyframes submit-animation{
