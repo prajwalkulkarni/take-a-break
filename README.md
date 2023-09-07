@@ -10,3 +10,7 @@ When it is time to take a break, the extension nudges an overlay on the active t
 This overlay can be dismissed before it is automatically removed after the break duration.
 
 Addtionally, you can enable push notifications that broadcasts a notification at every break interval. This is especially useful when you perform tasks across browser and other applications.
+
+## contribution
+
+This project is completely open-sourced and accepting contributions. Kindly go through the contribution guidelines to get started.
