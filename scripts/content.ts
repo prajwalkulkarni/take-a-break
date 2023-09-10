@@ -1,9 +1,7 @@
 import "./content.css";
 import { Alarms } from "./types";
 import lottie from "lottie-web";
-import waterAnimation from "../assets/lottiefiles/water.json";
-import stretchAnimation from "../assets/lottiefiles/stretch.json";
-import lookAwayAnimation from "../assets/lottiefiles/break.json";
+import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils";
 chrome.storage.local.get(
   [Alarms.ScreenBreak, Alarms.Walk, Alarms.Water],
   (items) => {
@@ -11,7 +9,6 @@ chrome.storage.local.get(
     const [task, interval, animation] =
       getMessageAndIntervalAndAnimation(taskName);
 
-    console.log();
     if (
       window.location.href.startsWith("http") ||
       window.location.href.startsWith("https")
@@ -101,51 +98,3 @@ chrome.storage.local.get(
     }
   }
 );
-
-const map = new Map();
-map.set(Alarms.ScreenBreak, [
-  "To Look At Something 20 Feet Away For 20 Seconds",
-  20000,
-  lookAwayAnimation,
-]);
-map.set(Alarms.Water, ["And Drink A Glass Of Water", 60000, waterAnimation]);
-map.set(Alarms.Walk, [
-  "To Stretch And Walk Around For 2 Minutes",
-  120000,
-  stretchAnimation,
-]);
-map.set("walkAndWalkAlarm", map.get(Alarms.Walk));
-map.set("breakAndWaterAlarm", [
-  "To Drink a Glass of water and look away from the screen",
-  80000,
-  waterAnimation,
-]);
-map.set("breakAndWaterAndWalkAlarm", [
-  "Time to drink a glass of water, look away from the screen and take a short walk",
-  180000,
-  stretchAnimation,
-]);
-
-function getMessageAndIntervalAndAnimation(alarmName: string) {
-  if (map.has(alarmName)) {
-    return map.get(alarmName);
-  }
-  return ["", 0, undefined];
-}
-
-function getTaskName(items: { [key: string]: boolean }) {
-  const alarms = Object.keys(items);
-
-  if (alarms.length === 3) {
-    return "breakAndWaterAndWalkAlarm";
-  } else if (alarms.length === 2) {
-    return items[Alarms.ScreenBreak] &&
-      (items[Alarms.Water] || items[Alarms.Walk])
-      ? "breakAndWaterAlarm"
-      : "waterAndWalkAlarm";
-  } else {
-    return alarms[0];
-  }
-}
-
-//Write a function that generates JSON for lottie animation of a person doing body stretching at office

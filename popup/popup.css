@@ -1,6 +1,7 @@
 :root{
     --color-primary: #2589BD;
     --color-success: #52c41a;
+    --color-failure: #d10c0c;
 }
 
 body{
@@ -133,13 +134,13 @@ button:hover{
     height: 20px;
     width: 20px;
     border-style: solid;
-    border-color:lightgray; 
+    border-color:transparent; 
     border-width:3px;
     font-size:0;
     z-index: 3;
     border-radius: 50%;
-    border-left-color:var(--color-primary);
-    background-color: white;
+    border-left-color:white;
+    background-color: transparent;
     transition: all 0.1s ease-in-out;
     animation: submit-animation 1s 0.25s ease-in-out infinite;
 }
@@ -158,6 +159,21 @@ button:hover{
 .takeABreak__validate::after{
     content:"Settings saved";
 }
+
+.takeABreak__invalidate{
+    font-size:medium;
+    color: white;
+    background: var(--color-failure);
+    transition: background-color 0.5s ease-in;
+  }
+  
+  .takeABreak__invalidate:hover{
+      background-color: var(--color-failure);
+    }
+  
+  .takeABreak__invalidate::after{
+      content:"Settings could not be saved";
+  }
 
 @keyframes submit-animation{
     from{

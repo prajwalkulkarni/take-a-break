@@ -20723,13 +20723,10 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 __webpack_require__(/*! ./content.css */ "./scripts/content.css");
 const types_1 = __webpack_require__(/*! ./types */ "./scripts/types.ts");
 const lottie_web_1 = __importDefault(__webpack_require__(/*! lottie-web */ "./node_modules/lottie-web/build/player/lottie.js"));
-const water_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/water.json */ "./assets/lottiefiles/water.json"));
-const stretch_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/stretch.json */ "./assets/lottiefiles/stretch.json"));
-const break_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/break.json */ "./assets/lottiefiles/break.json"));
+const utils_1 = __webpack_require__(/*! ./utils */ "./scripts/utils.ts");
 chrome.storage.local.get([types_1.Alarms.ScreenBreak, types_1.Alarms.Walk, types_1.Alarms.Water], (items) => {
-    const taskName = getTaskName(items);
-    const [task, interval, animation] = getMessageAndIntervalAndAnimation(taskName);
-    console.log();
+    const taskName = (0, utils_1.getTaskName)(items);
+    const [task, interval, animation] = (0, utils_1.getMessageAndIntervalAndAnimation)(taskName);
     if (window.location.href.startsWith("http") ||
         window.location.href.startsWith("https")) {
         // const body = document.querySelector('body');
@@ -20804,51 +20801,6 @@ chrome.storage.local.get([types_1.Alarms.ScreenBreak, types_1.Alarms.Walk, types
         ]);
     }
 });
-const map = new Map();
-map.set(types_1.Alarms.ScreenBreak, [
-    "To Look At Something 20 Feet Away For 20 Seconds",
-    20000,
-    break_json_1.default,
-]);
-map.set(types_1.Alarms.Water, ["And Drink A Glass Of Water", 60000, water_json_1.default]);
-map.set(types_1.Alarms.Walk, [
-    "To Stretch And Walk Around For 2 Minutes",
-    120000,
-    stretch_json_1.default,
-]);
-map.set("walkAndWalkAlarm", map.get(types_1.Alarms.Walk));
-map.set("breakAndWaterAlarm", [
-    "To Drink a Glass of water and look away from the screen",
-    80000,
-    water_json_1.default,
-]);
-map.set("breakAndWaterAndWalkAlarm", [
-    "Time to drink a glass of water, look away from the screen and take a short walk",
-    180000,
-    stretch_json_1.default,
-]);
-function getMessageAndIntervalAndAnimation(alarmName) {
-    if (map.has(alarmName)) {
-        return map.get(alarmName);
-    }
-    return ["", 0, undefined];
-}
-function getTaskName(items) {
-    const alarms = Object.keys(items);
-    if (alarms.length === 3) {
-        return "breakAndWaterAndWalkAlarm";
-    }
-    else if (alarms.length === 2) {
-        return items[types_1.Alarms.ScreenBreak] &&
-            (items[types_1.Alarms.Water] || items[types_1.Alarms.Walk])
-            ? "breakAndWaterAlarm"
-            : "waterAndWalkAlarm";
-    }
-    else {
-        return alarms[0];
-    }
-}
-//Write a function that generates JSON for lottie animation of a person doing body stretching at office
 
 
 /***/ }),
@@ -20869,6 +20821,82 @@ var Alarms;
     Alarms["Walk"] = "WALK";
     Alarms["ScreenBreak"] = "SCREEN_BREAK";
 })(Alarms || (exports.Alarms = Alarms = {}));
+
+
+/***/ }),
+
+/***/ "./scripts/utils.ts":
+/*!**************************!*\
+  !*** ./scripts/utils.ts ***!
+  \**************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.validateInput = exports.getTaskName = exports.getMessageAndIntervalAndAnimation = void 0;
+const types_1 = __webpack_require__(/*! ./types */ "./scripts/types.ts");
+const water_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/water.json */ "./assets/lottiefiles/water.json"));
+const stretch_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/stretch.json */ "./assets/lottiefiles/stretch.json"));
+const break_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/break.json */ "./assets/lottiefiles/break.json"));
+const map = new Map();
+map.set(types_1.Alarms.ScreenBreak, [
+    "Look At Something 20 Feet Away For 20 Seconds",
+    20000,
+    break_json_1.default,
+]);
+map.set(types_1.Alarms.Water, ["Drink A Glass Of Water", 60000, water_json_1.default]);
+map.set(types_1.Alarms.Walk, [
+    "Stretch And Walk Around For 2 Minutes",
+    120000,
+    stretch_json_1.default,
+]);
+map.set("walkAndWaterAlarm", map.get(types_1.Alarms.Walk));
+map.set("breakAndWaterAlarm", [
+    "Drink a Glass of water and look away from the screen",
+    80000,
+    water_json_1.default,
+]);
+map.set("breakAndWaterAndWalkAlarm", [
+    "Time to drink a glass of water, look away from the screen and take a short walk",
+    180000,
+    stretch_json_1.default,
+]);
+function getMessageAndIntervalAndAnimation(alarmName) {
+    if (map.has(alarmName)) {
+        return map.get(alarmName);
+    }
+    return ["", 0, undefined];
+}
+exports.getMessageAndIntervalAndAnimation = getMessageAndIntervalAndAnimation;
+function getTaskName(items) {
+    const alarms = Object.keys(items);
+    alarms.includes("showNotifications") &&
+        alarms.splice(alarms.indexOf("showNotifications"), 1);
+    if (alarms.length === 3) {
+        return "breakAndWaterAndWalkAlarm";
+    }
+    else if (alarms.length === 2) {
+        return items[types_1.Alarms.ScreenBreak] &&
+            (items[types_1.Alarms.Water] || items[types_1.Alarms.Walk])
+            ? "breakAndWaterAlarm"
+            : "waterAndWalkAlarm";
+    }
+    else {
+        return alarms[0];
+    }
+}
+exports.getTaskName = getTaskName;
+const validateInput = ({ timeout, water, walk, }) => {
+    if (timeout < 10 || water < 45 || walk < 30) {
+        throw new Error("Break intervals cannot be less than the minimum specified values.");
+    }
+    return true;
+};
+exports.validateInput = validateInput;
 
 
 /***/ }),

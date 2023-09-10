@@ -1,4 +1,5 @@
 import "../popup/popup.css";
+import { validateInput } from "./utils";
 const form = document.querySelector("form");
 const timeoutInput = document.querySelector("#timeout");
 const waterInput = document.querySelector("#water");
@@ -65,25 +66,46 @@ form?.addEventListener("submit", (e) => {
 
   const submitButton = document.querySelector("button");
 
-  //Animate button on click
   submitButton?.classList.add("takeABreak__button--animate");
 
-  //Remove animation class after 1 second
-  const animationTimeout = setTimeout(() => {
-    if (submitButton) {
-      submitButton.classList.remove("takeABreak__button--animate");
-      submitButton.classList.add("takeAbreak__validate");
-      submitButton.disabled = true;
-    }
-    clearTimeout(animationTimeout);
-  }, 1250);
+  try {
+    validateInput({ timeout, walk, water });
+    //Animate button on click
 
-  setTimeout(() => {
-    if (submitButton) {
-      submitButton.classList.remove("takeAbreak__validate");
-      submitButton.disabled = false;
-    }
-  }, 2350);
+    //Remove animation class after 1 second
+    const animationTimeout = setTimeout(() => {
+      if (submitButton) {
+        submitButton.classList.remove("takeABreak__button--animate");
+        submitButton.classList.add("takeAbreak__validate");
+        submitButton.disabled = true;
+      }
+      clearTimeout(animationTimeout);
+    }, 1250);
 
-  chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
+    setTimeout(() => {
+      if (submitButton) {
+        submitButton.classList.remove("takeAbreak__validate");
+        submitButton.disabled = false;
+      }
+    }, 2350);
+
+    chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
+  } catch (err) {
+    //Remove animation class after 1 second
+    const animationTimeout = setTimeout(() => {
+      if (submitButton) {
+        submitButton.classList.remove("takeABreak__button--animate");
+        submitButton.classList.add("takeAbreak__invalidate");
+        submitButton.disabled = true;
+      }
+      clearTimeout(animationTimeout);
+    }, 1250);
+
+    setTimeout(() => {
+      if (submitButton) {
+        submitButton.classList.remove("takeAbreak__invalidate");
+        submitButton.disabled = false;
+      }
+    }, 2350);
+  }
 });

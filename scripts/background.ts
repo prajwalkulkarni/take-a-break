@@ -1,4 +1,5 @@
 import { Alarms } from "./types";
+import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils";
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (typeof message === "object") {
@@ -23,16 +24,27 @@ chrome.alarms.onAlarm.addListener((alarm) => {
           files: ["dist/content.js"],
         })
         .then(() => {
-          chrome.storage.local.get("showNotifications", (items) => {
-            if (items.showNotification) {
-              chrome.notifications.create({
-                type: "basic",
-                iconUrl: "../assets/images/favicon-16x16.png",
-                title: "Take a break",
-                message: "It's time to take a break",
-              });
+          chrome.storage.local.get(
+            [
+              Alarms.ScreenBreak,
+              Alarms.Water,
+              Alarms.Walk,
+              "showNotifications",
+            ],
+            (items) => {
+              console.log(items);
+              const taskName = getTaskName(items);
+              const [task] = getMessageAndIntervalAndAnimation(taskName);
+              if (items.showNotifications) {
+                chrome.notifications.create({
+                  type: "basic",
+                  iconUrl: `../assets/images/${taskName}.png`,
+                  title: "Take a break",
+                  message: task,
+                });
+              }
             }
-          });
+          );
         });
     }
   });
