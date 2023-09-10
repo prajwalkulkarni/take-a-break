@@ -139,12 +139,12 @@ map.set(types_1.Alarms.Water, ["Drink A Glass Of Water", 60000, water_json_1.def
 map.set(types_1.Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretch_json_1.default]);
 map.set("walkAndWaterAlarm", map.get(types_1.Alarms.Walk));
 map.set("breakAndWaterAlarm", [
-    "Drink a Glass of Water and look away from the Screen",
+    "Drink a Glass of Water and Look Away from the Screen",
     80000,
     water_json_1.default,
 ]);
 map.set("breakAndWaterAndWalkAlarm", [
-    "Time to drink a Glass of Water, look away from the Screen and, take a short Stroll for a Clearer Mind",
+    "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Stroll",
     180000,
     stretch_json_1.default,
 ]);

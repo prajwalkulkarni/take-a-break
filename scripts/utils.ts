@@ -13,12 +13,12 @@ map.set(Alarms.Water, ["Drink A Glass Of Water", 60000, waterAnimation]);
 map.set(Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretchAnimation]);
 map.set("walkAndWaterAlarm", map.get(Alarms.Walk));
 map.set("breakAndWaterAlarm", [
-  "Drink a Glass of Water and look away from the Screen",
+  "Drink a Glass of Water and Look Away from the Screen",
   80000,
   waterAnimation,
 ]);
 map.set("breakAndWaterAndWalkAlarm", [
-  "Time to drink a Glass of Water, look away from the Screen and, take a short Stroll for a Clearer Mind",
+  "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Stroll",
   180000,
   stretchAnimation,
 ]);

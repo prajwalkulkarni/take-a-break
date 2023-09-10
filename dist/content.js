@@ -32,7 +32,8 @@ ___CSS_LOADER_EXPORT___.push([module.id, `:root{
   left : 0;
   width : 100%;
   height : 100%;
-  background-color : rgba(0, 0, 0, 0.5);
+  background-color : rgba(0, 0, 0, 0.75);
+  padding: 8px;
   z-index : 9999;
   display : flex;
   flex-direction : column;
@@ -89,7 +90,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `:root{
 .takeABreak__container > .takeABreak__dismiss:hover{
   background-color:#1c75a5;
 }
-`, "",{"version":3,"sources":["webpack://./scripts/content.css"],"names":[],"mappings":"AAAA;EACE,sBAAsB;EACtB,iBAAiB;AACnB;;AAEA;EACE,gBAAgB;EAChB,OAAO;EACP,QAAQ;EACR,YAAY;EACZ,aAAa;EACb,qCAAqC;EACrC,cAAc;EACd,cAAc;EACd,uBAAuB;EACvB,wBAAwB;EACxB,oBAAoB;EACpB,yCAAyC;AAC3C;;AAEA;EACE,aAAa;EACb,cAAc;EACd,8BAA8B;AAChC;AACA;IACI,YAAY;IACZ,gBAAgB;IAChB,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,mBAAmB;IACnB,yCAAyC;AAC7C;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,gBAAgB;IAChB,mBAAmB;IACnB,yCAAyC;AAC7C;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,mBAAmB;IACnB,gBAAgB;IAChB,yCAAyC;AAC7C;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,yBAAyB;EACzB,kBAAkB;EAClB,YAAY;EACZ,eAAe;EACf,eAAe;AACjB;;AAEA;EACE,wBAAwB;AAC1B","sourcesContent":[":root{\r\n  --content-spacing: 4px;\r\n  --line-heght: 1.5;\r\n}\r\n\r\n.takeABreak__container{\r\n  position : fixed;\r\n  top : 0;\r\n  left : 0;\r\n  width : 100%;\r\n  height : 100%;\r\n  background-color : rgba(0, 0, 0, 0.5);\r\n  z-index : 9999;\r\n  display : flex;\r\n  flex-direction : column;\r\n  justify-content : center;\r\n  align-items : center;\r\n  font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__lottie{\r\n  width : 200px;\r\n  height : 200px;\r\n  margin: var(--content-spacing);\r\n}\r\n.takeABreak__container > .takeABreak__title{\r\n    color : #fff;\r\n    font-size : 80px;\r\n    font-weight: 600;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    text-align : center;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__timer{\r\n    color : #fff;\r\n    font-size : 32px;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    font-weight: 500;\r\n    text-align : center;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__task{\r\n    color : #fff;\r\n    font-size : 32px;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    text-align : center;\r\n    font-weight: 400;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__dismiss{\r\n  color: #fff;\r\n  padding: 8px;\r\n  background-color: #2589BD;\r\n  border-radius: 4px;\r\n  border: none;\r\n  font-size: 20px;\r\n  cursor: pointer;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__dismiss:hover{\r\n  background-color:#1c75a5;\r\n}\r\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./scripts/content.css"],"names":[],"mappings":"AAAA;EACE,sBAAsB;EACtB,iBAAiB;AACnB;;AAEA;EACE,gBAAgB;EAChB,OAAO;EACP,QAAQ;EACR,YAAY;EACZ,aAAa;EACb,sCAAsC;EACtC,YAAY;EACZ,cAAc;EACd,cAAc;EACd,uBAAuB;EACvB,wBAAwB;EACxB,oBAAoB;EACpB,yCAAyC;AAC3C;;AAEA;EACE,aAAa;EACb,cAAc;EACd,8BAA8B;AAChC;AACA;IACI,YAAY;IACZ,gBAAgB;IAChB,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,mBAAmB;IACnB,yCAAyC;AAC7C;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,gBAAgB;IAChB,mBAAmB;IACnB,yCAAyC;AAC7C;;AAEA;IACI,YAAY;IACZ,gBAAgB;IAChB,8BAA8B;IAC9B,8BAA8B;IAC9B,mBAAmB;IACnB,gBAAgB;IAChB,yCAAyC;AAC7C;;AAEA;EACE,WAAW;EACX,YAAY;EACZ,yBAAyB;EACzB,kBAAkB;EAClB,YAAY;EACZ,eAAe;EACf,eAAe;AACjB;;AAEA;EACE,wBAAwB;AAC1B","sourcesContent":[":root{\r\n  --content-spacing: 4px;\r\n  --line-heght: 1.5;\r\n}\r\n\r\n.takeABreak__container{\r\n  position : fixed;\r\n  top : 0;\r\n  left : 0;\r\n  width : 100%;\r\n  height : 100%;\r\n  background-color : rgba(0, 0, 0, 0.75);\r\n  padding: 8px;\r\n  z-index : 9999;\r\n  display : flex;\r\n  flex-direction : column;\r\n  justify-content : center;\r\n  align-items : center;\r\n  font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__lottie{\r\n  width : 200px;\r\n  height : 200px;\r\n  margin: var(--content-spacing);\r\n}\r\n.takeABreak__container > .takeABreak__title{\r\n    color : #fff;\r\n    font-size : 80px;\r\n    font-weight: 600;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    text-align : center;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__timer{\r\n    color : #fff;\r\n    font-size : 32px;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    font-weight: 500;\r\n    text-align : center;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__task{\r\n    color : #fff;\r\n    font-size : 32px;\r\n    margin: var(--content-spacing);\r\n    line-height: var(--line-heght);\r\n    text-align : center;\r\n    font-weight: 400;\r\n    font-family: Arial, Helvetica, sans-serif;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__dismiss{\r\n  color: #fff;\r\n  padding: 8px;\r\n  background-color: #2589BD;\r\n  border-radius: 4px;\r\n  border: none;\r\n  font-size: 20px;\r\n  cursor: pointer;\r\n}\r\n\r\n.takeABreak__container > .takeABreak__dismiss:hover{\r\n  background-color:#1c75a5;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -20852,12 +20853,12 @@ map.set(types_1.Alarms.Water, ["Drink A Glass Of Water", 60000, water_json_1.def
 map.set(types_1.Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretch_json_1.default]);
 map.set("walkAndWaterAlarm", map.get(types_1.Alarms.Walk));
 map.set("breakAndWaterAlarm", [
-    "Drink a Glass of Water and look away from the Screen",
+    "Drink a Glass of Water and Look Away from the Screen",
     80000,
     water_json_1.default,
 ]);
 map.set("breakAndWaterAndWalkAlarm", [
-    "Time to drink a Glass of Water, look away from the Screen and, take a short Stroll for a Clearer Mind",
+    "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Stroll",
     180000,
     stretch_json_1.default,
 ]);
