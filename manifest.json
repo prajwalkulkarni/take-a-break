@@ -3,12 +3,15 @@
     "name": "Take a Break",
     "version": "1.0",
     "action": {
-        "default_icon": "assets/images/favicon-16x16.png",
+        "default_icon": "assets/images/logo.png",
         "default_popup": "dist/popup.html",
         "default_title": "Take a Break"
     },
     "icons":{
-        "16": "assets/images/favicon-16x16.png"
+        "16": "assets/images/icon16.png",
+        "32": "assets/images/icon32.png",
+        "48": "assets/images/icon48.png",
+        "128": "assets/images/icon128.png"
     },
     "permissions":["tabs", "storage", "alarms", "notifications", "activeTab", "background", "scripting"],
     "host_permissions": ["https://*/*", "http://*/*"],

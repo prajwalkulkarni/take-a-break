@@ -51,24 +51,20 @@ const stretch_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottief
 const break_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/break.json */ "./assets/lottiefiles/break.json"));
 const map = new Map();
 map.set(types_1.Alarms.ScreenBreak, [
-    "Look At Something 20 Feet Away For 20 Seconds",
+    "Look at Something 20 Feet Away For 20 Seconds",
     20000,
     break_json_1.default,
 ]);
 map.set(types_1.Alarms.Water, ["Drink A Glass Of Water", 60000, water_json_1.default]);
-map.set(types_1.Alarms.Walk, [
-    "Stretch And Walk Around For 2 Minutes",
-    120000,
-    stretch_json_1.default,
-]);
+map.set(types_1.Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretch_json_1.default]);
 map.set("walkAndWaterAlarm", map.get(types_1.Alarms.Walk));
 map.set("breakAndWaterAlarm", [
-    "Drink a Glass of water and look away from the screen",
+    "Drink a Glass of Water and look away from the Screen",
     80000,
     water_json_1.default,
 ]);
 map.set("breakAndWaterAndWalkAlarm", [
-    "Time to drink a glass of water, look away from the screen and take a short walk",
+    "Time to drink a Glass of Water, look away from the Screen and, take a short Stroll for a Clearer Mind",
     180000,
     stretch_json_1.default,
 ]);
