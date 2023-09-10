@@ -5,24 +5,20 @@ import lookAwayAnimation from "../assets/lottiefiles/break.json";
 
 const map = new Map();
 map.set(Alarms.ScreenBreak, [
-  "Look At Something 20 Feet Away For 20 Seconds",
+  "Look at Something 20 Feet Away For 20 Seconds",
   20000,
   lookAwayAnimation,
 ]);
 map.set(Alarms.Water, ["Drink A Glass Of Water", 60000, waterAnimation]);
-map.set(Alarms.Walk, [
-  "Stretch And Walk Around For 2 Minutes",
-  120000,
-  stretchAnimation,
-]);
+map.set(Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretchAnimation]);
 map.set("walkAndWaterAlarm", map.get(Alarms.Walk));
 map.set("breakAndWaterAlarm", [
-  "Drink a Glass of water and look away from the screen",
+  "Drink a Glass of Water and look away from the Screen",
   80000,
   waterAnimation,
 ]);
 map.set("breakAndWaterAndWalkAlarm", [
-  "Time to drink a glass of water, look away from the screen and take a short walk",
+  "Time to drink a Glass of Water, look away from the Screen and, take a short Stroll for a Clearer Mind",
   180000,
   stretchAnimation,
 ]);
