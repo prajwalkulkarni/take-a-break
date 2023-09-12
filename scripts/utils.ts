@@ -37,8 +37,7 @@ export function getTaskName(items: { [key: string]: boolean }) {
   if (alarms.length === 3) {
     return "breakAndWaterAndWalkAlarm";
   } else if (alarms.length === 2) {
-    return items[Alarms.ScreenBreak] &&
-      (items[Alarms.Water] || items[Alarms.Walk])
+    return items[Alarms.ScreenBreak] && items[Alarms.Water]
       ? "breakAndWaterAlarm"
       : "waterAndWalkAlarm";
   } else {
