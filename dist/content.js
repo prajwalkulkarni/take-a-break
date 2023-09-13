@@ -20873,14 +20873,14 @@ function getTaskName(items) {
     const alarms = Object.keys(items);
     alarms.includes("showNotifications") &&
         alarms.splice(alarms.indexOf("showNotifications"), 1);
+    console.log(alarms);
     if (alarms.length === 3) {
         return "breakAndWaterAndWalkAlarm";
     }
     else if (alarms.length === 2) {
-        return items[types_1.Alarms.ScreenBreak] &&
-            (items[types_1.Alarms.Water] || items[types_1.Alarms.Walk])
+        return items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water]
             ? "breakAndWaterAlarm"
-            : "waterAndWalkAlarm";
+            : "walkAndWaterAlarm";
     }
     else {
         return alarms[0];

@@ -79,14 +79,14 @@ function getTaskName(items) {
     const alarms = Object.keys(items);
     alarms.includes("showNotifications") &&
         alarms.splice(alarms.indexOf("showNotifications"), 1);
+    console.log(alarms);
     if (alarms.length === 3) {
         return "breakAndWaterAndWalkAlarm";
     }
     else if (alarms.length === 2) {
-        return items[types_1.Alarms.ScreenBreak] &&
-            (items[types_1.Alarms.Water] || items[types_1.Alarms.Walk])
+        return items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water]
             ? "breakAndWaterAlarm"
-            : "waterAndWalkAlarm";
+            : "walkAndWaterAlarm";
     }
     else {
         return alarms[0];
@@ -217,7 +217,7 @@ waterInput === null || waterInput === void 0 ? void 0 : waterInput.addEventListe
 walkInput === null || walkInput === void 0 ? void 0 : walkInput.addEventListener("input", (e) => {
     //Update the label with the current slider value
     const label = document.querySelector("#walkLabel");
-    label.textContent = `Walk - ${e.target.value} minutes`;
+    label.textContent = `Stretch/Stroll - ${e.target.value} minutes`;
 });
 form === null || form === void 0 ? void 0 : form.addEventListener("submit", (e) => {
     e.preventDefault();

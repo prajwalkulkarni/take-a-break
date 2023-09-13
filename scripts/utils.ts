@@ -34,12 +34,13 @@ export function getTaskName(items: { [key: string]: boolean }) {
   const alarms = Object.keys(items);
   alarms.includes("showNotifications") &&
     alarms.splice(alarms.indexOf("showNotifications"), 1);
+  console.log(alarms);
   if (alarms.length === 3) {
     return "breakAndWaterAndWalkAlarm";
   } else if (alarms.length === 2) {
     return items[Alarms.ScreenBreak] && items[Alarms.Water]
       ? "breakAndWaterAlarm"
-      : "waterAndWalkAlarm";
+      : "walkAndWaterAlarm";
   } else {
     return alarms[0];
   }

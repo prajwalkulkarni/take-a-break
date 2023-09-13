@@ -21,7 +21,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const types_1 = __webpack_require__(/*! ./types */ "./scripts/types.ts");
 const utils_1 = __webpack_require__(/*! ./utils */ "./scripts/utils.ts");
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message) => {
     if (typeof message === "object") {
         Object.entries(message).forEach(([key, value]) => {
             chrome.storage.local.set({ [key]: value });
@@ -49,7 +49,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
                     types_1.Alarms.Walk,
                     "showNotifications",
                 ], (items) => {
-                    console.log(items);
                     const taskName = (0, utils_1.getTaskName)(items);
                     const [task] = (0, utils_1.getMessageAndIntervalAndAnimation)(taskName);
                     if (items.showNotifications) {
@@ -159,14 +158,14 @@ function getTaskName(items) {
     const alarms = Object.keys(items);
     alarms.includes("showNotifications") &&
         alarms.splice(alarms.indexOf("showNotifications"), 1);
+    console.log(alarms);
     if (alarms.length === 3) {
         return "breakAndWaterAndWalkAlarm";
     }
     else if (alarms.length === 2) {
-        return items[types_1.Alarms.ScreenBreak] &&
-            (items[types_1.Alarms.Water] || items[types_1.Alarms.Walk])
+        return items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water]
             ? "breakAndWaterAlarm"
-            : "waterAndWalkAlarm";
+            : "walkAndWaterAlarm";
     }
     else {
         return alarms[0];

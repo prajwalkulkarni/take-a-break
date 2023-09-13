@@ -49,7 +49,9 @@ waterInput?.addEventListener("input", (e) => {
 walkInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#walkLabel");
-  label!.textContent = `Walk - ${(e.target as HTMLInputElement).value} minutes`;
+  label!.textContent = `Stretch/Stroll - ${
+    (e.target as HTMLInputElement).value
+  } minutes`;
 });
 
 form?.addEventListener("submit", (e) => {

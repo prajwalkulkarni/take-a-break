@@ -1,7 +1,7 @@
 import { Alarms } from "./types";
 import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils";
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message) => {
   if (typeof message === "object") {
     Object.entries(message).forEach(([key, value]) => {
       chrome.storage.local.set({ [key]: value });
@@ -32,7 +32,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
               "showNotifications",
             ],
             (items) => {
-              console.log(items);
               const taskName = getTaskName(items);
               const [task] = getMessageAndIntervalAndAnimation(taskName);
               if (items.showNotifications) {
