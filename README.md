@@ -21,4 +21,4 @@ Additionally, you can enable push notifications that broadcast a notification at
 
 ## Contribution
 
-This project is open-sourced and accepting contributions. Kindly go through the contribution guidelines to get started.
+This project is open-sourced and accepting contributions. Kindly go through the [contribution guidelines](CONTRIBUTING.md) to get started.
