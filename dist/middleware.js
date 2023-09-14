@@ -193,15 +193,14 @@ const waterLabel = document.querySelector("#waterLabel");
 const walkLabel = document.querySelector("#walkLabel");
 const notifications = document.querySelector("#notifications");
 chrome.storage.local.get(["timeout", "water", "walk", "showNotifications"], (items) => {
-    var _a, _b, _c;
     const { timeout, water, walk } = items;
     console.log(timeout, timeout === null || timeout === void 0 ? void 0 : timeout.toString());
-    timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.setAttribute("value", (_a = timeout === null || timeout === void 0 ? void 0 : timeout.toString()) !== null && _a !== void 0 ? _a : "20");
-    waterInput === null || waterInput === void 0 ? void 0 : waterInput.setAttribute("value", (_b = water === null || water === void 0 ? void 0 : water.toString()) !== null && _b !== void 0 ? _b : "120");
-    walkInput === null || walkInput === void 0 ? void 0 : walkInput.setAttribute("value", (_c = walk === null || walk === void 0 ? void 0 : walk.toString()) !== null && _c !== void 0 ? _c : "45");
-    timeoutLabel.textContent = `Look away from screen - ${timeout !== null && timeout !== void 0 ? timeout : "20"} minutes`;
-    waterLabel.textContent = `Drink water - ${water !== null && water !== void 0 ? water : "120"} minutes`;
-    walkLabel.textContent = `Stretch/Stroll - ${walk !== null && walk !== void 0 ? walk : "45"} minutes`;
+    timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.setAttribute("value", timeout === null || timeout === void 0 ? void 0 : timeout.toString());
+    waterInput === null || waterInput === void 0 ? void 0 : waterInput.setAttribute("value", water === null || water === void 0 ? void 0 : water.toString());
+    walkInput === null || walkInput === void 0 ? void 0 : walkInput.setAttribute("value", walk === null || walk === void 0 ? void 0 : walk.toString());
+    timeoutLabel.textContent = `Look away from screen - ${timeout} minutes`;
+    waterLabel.textContent = `Drink water - ${water} minutes`;
+    walkLabel.textContent = `Stretch/Stroll - ${walk} minutes`;
     notifications.checked = items.showNotifications;
 });
 timeoutInput === null || timeoutInput === void 0 ? void 0 : timeoutInput.addEventListener("input", (e) => {

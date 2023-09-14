@@ -1,6 +1,18 @@
 import { Alarms } from "./types";
 import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils";
 
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.local.set({
+    timeout: 20,
+    water: 60,
+    walk: 120,
+    showNotifications: true,
+  });
+  createOrUpdateAlarms();
+});
+chrome.runtime.onStartup.addListener(() => {
+  createOrUpdateAlarms();
+});
 chrome.runtime.onMessage.addListener((message) => {
   if (typeof message === "object") {
     Object.entries(message).forEach(([key, value]) => {

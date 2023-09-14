@@ -21,6 +21,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const types_1 = __webpack_require__(/*! ./types */ "./scripts/types.ts");
 const utils_1 = __webpack_require__(/*! ./utils */ "./scripts/utils.ts");
+chrome.runtime.onInstalled.addListener(() => {
+    chrome.storage.local.set({
+        timeout: 20,
+        water: 60,
+        walk: 120,
+        showNotifications: true,
+    });
+    createOrUpdateAlarms();
+});
+chrome.runtime.onStartup.addListener(() => {
+    createOrUpdateAlarms();
+});
 chrome.runtime.onMessage.addListener((message) => {
     if (typeof message === "object") {
         Object.entries(message).forEach(([key, value]) => {

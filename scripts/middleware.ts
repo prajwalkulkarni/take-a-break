@@ -16,15 +16,13 @@ chrome.storage.local.get(
     const { timeout, water, walk } = items;
     console.log(timeout, timeout?.toString());
 
-    timeoutInput?.setAttribute("value", timeout?.toString() ?? "20");
-    waterInput?.setAttribute("value", water?.toString() ?? "120");
-    walkInput?.setAttribute("value", walk?.toString() ?? "45");
+    timeoutInput?.setAttribute("value", timeout?.toString());
+    waterInput?.setAttribute("value", water?.toString());
+    walkInput?.setAttribute("value", walk?.toString());
 
-    timeoutLabel!.textContent = `Look away from screen - ${
-      timeout ?? "20"
-    } minutes`;
-    waterLabel!.textContent = `Drink water - ${water ?? "120"} minutes`;
-    walkLabel!.textContent = `Stretch/Stroll - ${walk ?? "45"} minutes`;
+    timeoutLabel!.textContent = `Look away from screen - ${timeout} minutes`;
+    waterLabel!.textContent = `Drink water - ${water} minutes`;
+    walkLabel!.textContent = `Stretch/Stroll - ${walk} minutes`;
 
     (notifications as HTMLInputElement).checked = items.showNotifications;
   }
