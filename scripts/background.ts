@@ -4,8 +4,8 @@ import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils";
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({
     timeout: 20,
-    water: 60,
-    walk: 120,
+    water: 120,
+    walk: 30,
     showNotifications: true,
   });
   createOrUpdateAlarms();

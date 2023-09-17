@@ -24,8 +24,8 @@ const utils_1 = __webpack_require__(/*! ./utils */ "./scripts/utils.ts");
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({
         timeout: 20,
-        water: 60,
-        walk: 120,
+        water: 120,
+        walk: 30,
         showNotifications: true,
     });
     createOrUpdateAlarms();
@@ -119,6 +119,9 @@ var Alarms;
     Alarms["Water"] = "WATER";
     Alarms["Walk"] = "WALK";
     Alarms["ScreenBreak"] = "SCREEN_BREAK";
+    Alarms["WalkAndWater"] = "WALK_WATER";
+    Alarms["BreakAndWater"] = "BREAK_WATER";
+    Alarms["BreakAndWaterAndWalk"] = "BREAK_WATER_WALK";
 })(Alarms || (exports.Alarms = Alarms = {}));
 
 
@@ -148,13 +151,13 @@ map.set(types_1.Alarms.ScreenBreak, [
 ]);
 map.set(types_1.Alarms.Water, ["Drink A Glass Of Water", 60000, water_json_1.default]);
 map.set(types_1.Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretch_json_1.default]);
-map.set("walkAndWaterAlarm", map.get(types_1.Alarms.Walk));
-map.set("breakAndWaterAlarm", [
+map.set(types_1.Alarms.WalkAndWater, map.get(types_1.Alarms.Walk));
+map.set(types_1.Alarms.BreakAndWater, [
     "Drink a Glass of Water and Look Away from the Screen",
     80000,
     water_json_1.default,
 ]);
-map.set("breakAndWaterAndWalkAlarm", [
+map.set(types_1.Alarms.BreakAndWaterAndWalk, [
     "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Stroll",
     180000,
     stretch_json_1.default,
@@ -172,12 +175,12 @@ function getTaskName(items) {
         alarms.splice(alarms.indexOf("showNotifications"), 1);
     console.log(alarms);
     if (alarms.length === 3) {
-        return "breakAndWaterAndWalkAlarm";
+        return types_1.Alarms.BreakAndWaterAndWalk;
     }
     else if (alarms.length === 2) {
         return items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water]
-            ? "breakAndWaterAlarm"
-            : "walkAndWaterAlarm";
+            ? types_1.Alarms.BreakAndWater
+            : types_1.Alarms.WalkAndWater;
     }
     else {
         return alarms[0];

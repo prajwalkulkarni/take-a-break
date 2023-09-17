@@ -11,13 +11,13 @@ map.set(Alarms.ScreenBreak, [
 ]);
 map.set(Alarms.Water, ["Drink A Glass Of Water", 60000, waterAnimation]);
 map.set(Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretchAnimation]);
-map.set("walkAndWaterAlarm", map.get(Alarms.Walk));
-map.set("breakAndWaterAlarm", [
+map.set(Alarms.WalkAndWater, map.get(Alarms.Walk));
+map.set(Alarms.BreakAndWater, [
   "Drink a Glass of Water and Look Away from the Screen",
   80000,
   waterAnimation,
 ]);
-map.set("breakAndWaterAndWalkAlarm", [
+map.set(Alarms.BreakAndWaterAndWalk, [
   "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Stroll",
   180000,
   stretchAnimation,
@@ -36,11 +36,11 @@ export function getTaskName(items: { [key: string]: boolean }) {
     alarms.splice(alarms.indexOf("showNotifications"), 1);
   console.log(alarms);
   if (alarms.length === 3) {
-    return "breakAndWaterAndWalkAlarm";
+    return Alarms.BreakAndWaterAndWalk;
   } else if (alarms.length === 2) {
     return items[Alarms.ScreenBreak] && items[Alarms.Water]
-      ? "breakAndWaterAlarm"
-      : "walkAndWaterAlarm";
+      ? Alarms.BreakAndWater
+      : Alarms.WalkAndWater;
   } else {
     return alarms[0];
   }
