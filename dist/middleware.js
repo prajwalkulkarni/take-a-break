@@ -30,6 +30,7 @@ var Alarms;
     Alarms["ScreenBreak"] = "SCREEN_BREAK";
     Alarms["WalkAndWater"] = "WALK_WATER";
     Alarms["BreakAndWater"] = "BREAK_WATER";
+    Alarms["BreakAndWalk"] = "BREAK_WALK";
     Alarms["BreakAndWaterAndWalk"] = "BREAK_WATER_WALK";
 })(Alarms || (exports.Alarms = Alarms = {}));
 
@@ -54,7 +55,7 @@ const stretch_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottief
 const break_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/break.json */ "./assets/lottiefiles/break.json"));
 const map = new Map();
 chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     const { timeout, water, walk } = items;
     const weightageToAnimation = {
         [timeout]: types_1.Alarms.ScreenBreak,
@@ -91,22 +92,19 @@ chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
         animation: (_b = map.get(weightageToAnimation[Math.max(timeout, water)])) === null || _b === void 0 ? void 0 : _b.animation,
         weightage: 0,
     });
+    map.set(types_1.Alarms.BreakAndWalk, {
+        message: "Take a Short Walk and Look Away from the Screen",
+        breaktime: 140000,
+        animation: (_c = map.get(weightageToAnimation[Math.max(timeout, walk)])) === null || _c === void 0 ? void 0 : _c.animation,
+        weightage: 0,
+    });
     map.set(types_1.Alarms.BreakAndWaterAndWalk, {
         message: "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Walk",
         breaktime: 200000,
-        animation: (_c = map.get(weightageToAnimation[Math.max(timeout, walk, water)])) === null || _c === void 0 ? void 0 : _c.animation,
+        animation: (_d = map.get(weightageToAnimation[Math.max(timeout, walk, water)])) === null || _d === void 0 ? void 0 : _d.animation,
         weightage: 0,
     });
 });
-// export const updateTimeoutWeightage = ({
-//   timeout,
-//   water,
-//   walk,
-// }: {
-//   timeout: number;
-//   water: number;
-//   walk: number;
-// }) => {};
 function getMessageAndIntervalAndAnimation(alarmName) {
     if (map.has(alarmName)) {
         return (map.get(alarmName) || {
@@ -129,7 +127,9 @@ function getTaskName(items) {
     else if (alarms.length === 2) {
         return items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Water]
             ? types_1.Alarms.BreakAndWater
-            : types_1.Alarms.WalkAndWater;
+            : items[types_1.Alarms.ScreenBreak] && items[types_1.Alarms.Walk]
+                ? types_1.Alarms.BreakAndWalk
+                : types_1.Alarms.WalkAndWater;
     }
     else {
         return alarms[0];

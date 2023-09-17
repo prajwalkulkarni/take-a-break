@@ -43,6 +43,13 @@ chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
       ?.animation,
     weightage: 0,
   });
+  map.set(Alarms.BreakAndWalk, {
+    message: "Take a Short Walk and Look Away from the Screen",
+    breaktime: 140000,
+    animation: map.get(weightageToAnimation[Math.max(timeout, walk)])
+      ?.animation,
+    weightage: 0,
+  });
   map.set(Alarms.BreakAndWaterAndWalk, {
     message:
       "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Walk",
@@ -52,15 +59,6 @@ chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
     weightage: 0,
   });
 });
-// export const updateTimeoutWeightage = ({
-//   timeout,
-//   water,
-//   walk,
-// }: {
-//   timeout: number;
-//   water: number;
-//   walk: number;
-// }) => {};
 
 export function getMessageAndIntervalAndAnimation(alarmName: string): MapTask {
   if (map.has(alarmName)) {
@@ -86,6 +84,8 @@ export function getTaskName(items: { [key: string]: boolean }) {
   } else if (alarms.length === 2) {
     return items[Alarms.ScreenBreak] && items[Alarms.Water]
       ? Alarms.BreakAndWater
+      : items[Alarms.ScreenBreak] && items[Alarms.Walk]
+      ? Alarms.BreakAndWalk
       : Alarms.WalkAndWater;
   } else {
     return alarms[0];
