@@ -6,8 +6,11 @@ chrome.storage.local.get(
   [Alarms.ScreenBreak, Alarms.Walk, Alarms.Water],
   (items) => {
     const taskName = getTaskName(items);
-    const [task, interval, animation] =
-      getMessageAndIntervalAndAnimation(taskName);
+    const {
+      message: task,
+      breaktime: interval,
+      animation,
+    } = getMessageAndIntervalAndAnimation(taskName);
 
     if (
       window.location.href.startsWith("http") ||

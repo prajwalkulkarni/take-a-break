@@ -21,11 +21,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const types_1 = __webpack_require__(/*! ./types */ "./scripts/types.ts");
 const utils_1 = __webpack_require__(/*! ./utils */ "./scripts/utils.ts");
+const alarmsFired = new Set();
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.local.set({
         timeout: 20,
         water: 120,
-        walk: 30,
+        walk: 40,
         showNotifications: true,
     });
     createOrUpdateAlarms();
@@ -44,43 +45,44 @@ chrome.runtime.onMessage.addListener((message) => {
 //Listen for the alarm to fire
 chrome.alarms.onAlarm.addListener((alarm) => {
     console.log("Fired", alarm.name);
-    //   if (alarm.name === "breakAlarm") {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => __awaiter(void 0, void 0, void 0, function* () {
         //Execute content script when the alarm fires
         if (tabs.length > 0) {
             chrome.storage.local.set({ [alarm.name]: true });
-            chrome.scripting
-                .executeScript({
+            alarmsFired.add(alarm.name);
+            pushNotificationIfNotDuplicate(alarm.name);
+            chrome.scripting.executeScript({
                 target: { tabId: tabs[0].id },
                 files: ["dist/content.js"],
-            })
-                .then(() => {
-                chrome.storage.local.get([
-                    types_1.Alarms.ScreenBreak,
-                    types_1.Alarms.Water,
-                    types_1.Alarms.Walk,
-                    "showNotifications",
-                ], (items) => {
-                    const taskName = (0, utils_1.getTaskName)(items);
-                    const [task] = (0, utils_1.getMessageAndIntervalAndAnimation)(taskName);
-                    if (items.showNotifications) {
-                        chrome.notifications.create({
-                            type: "basic",
-                            iconUrl: `../assets/images/${taskName}.png`,
-                            title: "Take a break",
-                            message: task,
-                        });
-                    }
-                });
             });
         }
     }));
     //   }
 });
+function pushNotificationIfNotDuplicate(alarmName) {
+    if (alarmsFired.size <= 1) {
+        chrome.storage.local.get([types_1.Alarms.ScreenBreak, types_1.Alarms.Water, types_1.Alarms.Walk, "showNotifications"], (items) => {
+            const taskName = (0, utils_1.getTaskName)(items);
+            const { message } = (0, utils_1.getMessageAndIntervalAndAnimation)(taskName);
+            if (items.showNotifications) {
+                chrome.notifications.create({
+                    type: "basic",
+                    iconUrl: `../assets/images/${taskName}.png`,
+                    title: "Take a break",
+                    message: message,
+                });
+            }
+        });
+    }
+    else {
+        alarmsFired.delete(alarmName);
+    }
+}
 function createOrUpdateAlarms() {
     chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
         const { timeout, water, walk } = items;
         chrome.alarms.clearAll();
+        // updateTimeoutWeightage({ timeout, water, walk });
         if (timeout) {
             chrome.alarms.create(types_1.Alarms.ScreenBreak, {
                 delayInMinutes: timeout,
@@ -144,36 +146,76 @@ const water_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefil
 const stretch_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/stretch.json */ "./assets/lottiefiles/stretch.json"));
 const break_json_1 = __importDefault(__webpack_require__(/*! ../assets/lottiefiles/break.json */ "./assets/lottiefiles/break.json"));
 const map = new Map();
-map.set(types_1.Alarms.ScreenBreak, [
-    "Look at Something 20 Feet Away For 20 Seconds",
-    20000,
-    break_json_1.default,
-]);
-map.set(types_1.Alarms.Water, ["Drink A Glass Of Water", 60000, water_json_1.default]);
-map.set(types_1.Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretch_json_1.default]);
-map.set(types_1.Alarms.WalkAndWater, map.get(types_1.Alarms.Walk));
-map.set(types_1.Alarms.BreakAndWater, [
-    "Drink a Glass of Water and Look Away from the Screen",
-    80000,
-    water_json_1.default,
-]);
-map.set(types_1.Alarms.BreakAndWaterAndWalk, [
-    "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Stroll",
-    180000,
-    stretch_json_1.default,
-]);
+chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
+    var _a, _b, _c;
+    const { timeout, water, walk } = items;
+    const weightageToAnimation = {
+        [timeout]: types_1.Alarms.ScreenBreak,
+        [water]: types_1.Alarms.Water,
+        [walk]: types_1.Alarms.Walk,
+    };
+    map.set(types_1.Alarms.ScreenBreak, {
+        message: "Look at Something 20 Feet Away For 20 Seconds",
+        breaktime: 20000,
+        animation: break_json_1.default,
+        weightage: timeout,
+    });
+    map.set(types_1.Alarms.Water, {
+        message: "Drink A Glass Of Water",
+        breaktime: 60000,
+        animation: water_json_1.default,
+        weightage: water,
+    });
+    map.set(types_1.Alarms.Walk, {
+        message: "Stretch, Walk and Recharge!",
+        breaktime: 120000,
+        animation: stretch_json_1.default,
+        weightage: walk,
+    });
+    map.set(types_1.Alarms.WalkAndWater, {
+        message: "Stretch, Walk and Drink Water!",
+        breaktime: 180000,
+        animation: (_a = map.get(weightageToAnimation[Math.max(walk, water)])) === null || _a === void 0 ? void 0 : _a.animation,
+        weightage: 0,
+    });
+    map.set(types_1.Alarms.BreakAndWater, {
+        message: "Drink a Glass of Water and Look Away from the Screen",
+        breaktime: 80000,
+        animation: (_b = map.get(weightageToAnimation[Math.max(timeout, water)])) === null || _b === void 0 ? void 0 : _b.animation,
+        weightage: 0,
+    });
+    map.set(types_1.Alarms.BreakAndWaterAndWalk, {
+        message: "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Walk",
+        breaktime: 200000,
+        animation: (_c = map.get(weightageToAnimation[Math.max(timeout, walk, water)])) === null || _c === void 0 ? void 0 : _c.animation,
+        weightage: 0,
+    });
+});
+// export const updateTimeoutWeightage = ({
+//   timeout,
+//   water,
+//   walk,
+// }: {
+//   timeout: number;
+//   water: number;
+//   walk: number;
+// }) => {};
 function getMessageAndIntervalAndAnimation(alarmName) {
     if (map.has(alarmName)) {
-        return map.get(alarmName);
+        return (map.get(alarmName) || {
+            message: "",
+            breaktime: 0,
+            animation: undefined,
+            weightage: 0,
+        });
     }
-    return ["", 0, undefined];
+    return { message: "", breaktime: 0, animation: undefined, weightage: 0 };
 }
 exports.getMessageAndIntervalAndAnimation = getMessageAndIntervalAndAnimation;
 function getTaskName(items) {
     const alarms = Object.keys(items);
     alarms.includes("showNotifications") &&
         alarms.splice(alarms.indexOf("showNotifications"), 1);
-    console.log(alarms);
     if (alarms.length === 3) {
         return types_1.Alarms.BreakAndWaterAndWalk;
     }

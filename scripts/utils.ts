@@ -1,40 +1,86 @@
-import { Alarms } from "./types";
+import { Alarms, MapTask } from "./types";
 import waterAnimation from "../assets/lottiefiles/water.json";
 import stretchAnimation from "../assets/lottiefiles/stretch.json";
 import lookAwayAnimation from "../assets/lottiefiles/break.json";
 
-const map = new Map();
-map.set(Alarms.ScreenBreak, [
-  "Look at Something 20 Feet Away For 20 Seconds",
-  20000,
-  lookAwayAnimation,
-]);
-map.set(Alarms.Water, ["Drink A Glass Of Water", 60000, waterAnimation]);
-map.set(Alarms.Walk, ["Stretch, Walk and Recharge!", 120000, stretchAnimation]);
-map.set(Alarms.WalkAndWater, map.get(Alarms.Walk));
-map.set(Alarms.BreakAndWater, [
-  "Drink a Glass of Water and Look Away from the Screen",
-  80000,
-  waterAnimation,
-]);
-map.set(Alarms.BreakAndWaterAndWalk, [
-  "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Stroll",
-  180000,
-  stretchAnimation,
-]);
+const map = new Map<string, MapTask>();
 
-export function getMessageAndIntervalAndAnimation(alarmName: string) {
+chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
+  const { timeout, water, walk } = items;
+  const weightageToAnimation = {
+    [timeout]: Alarms.ScreenBreak,
+    [water]: Alarms.Water,
+    [walk]: Alarms.Walk,
+  };
+  map.set(Alarms.ScreenBreak, {
+    message: "Look at Something 20 Feet Away For 20 Seconds",
+    breaktime: 20000,
+    animation: lookAwayAnimation,
+    weightage: timeout,
+  });
+  map.set(Alarms.Water, {
+    message: "Drink A Glass Of Water",
+    breaktime: 60000,
+    animation: waterAnimation,
+    weightage: water,
+  });
+  map.set(Alarms.Walk, {
+    message: "Stretch, Walk and Recharge!",
+    breaktime: 120000,
+    animation: stretchAnimation,
+    weightage: walk,
+  });
+  map.set(Alarms.WalkAndWater, {
+    message: "Stretch, Walk and Drink Water!",
+    breaktime: 180000,
+    animation: map.get(weightageToAnimation[Math.max(walk, water)])?.animation,
+    weightage: 0,
+  });
+  map.set(Alarms.BreakAndWater, {
+    message: "Drink a Glass of Water and Look Away from the Screen",
+    breaktime: 80000,
+    animation: map.get(weightageToAnimation[Math.max(timeout, water)])
+      ?.animation,
+    weightage: 0,
+  });
+  map.set(Alarms.BreakAndWaterAndWalk, {
+    message:
+      "Time to drink a Glass of Water, Look Away from the Screen and, take a Short Walk",
+    breaktime: 200000,
+    animation: map.get(weightageToAnimation[Math.max(timeout, walk, water)])
+      ?.animation,
+    weightage: 0,
+  });
+});
+// export const updateTimeoutWeightage = ({
+//   timeout,
+//   water,
+//   walk,
+// }: {
+//   timeout: number;
+//   water: number;
+//   walk: number;
+// }) => {};
+
+export function getMessageAndIntervalAndAnimation(alarmName: string): MapTask {
   if (map.has(alarmName)) {
-    return map.get(alarmName);
+    return (
+      map.get(alarmName) || {
+        message: "",
+        breaktime: 0,
+        animation: undefined,
+        weightage: 0,
+      }
+    );
   }
-  return ["", 0, undefined];
+  return { message: "", breaktime: 0, animation: undefined, weightage: 0 };
 }
 
 export function getTaskName(items: { [key: string]: boolean }) {
   const alarms = Object.keys(items);
   alarms.includes("showNotifications") &&
     alarms.splice(alarms.indexOf("showNotifications"), 1);
-  console.log(alarms);
+
   if (alarms.length === 3) {
     return Alarms.BreakAndWaterAndWalk;
   } else if (alarms.length === 2) {
