@@ -56,6 +56,7 @@ function pushNotificationIfNotDuplicate(alarmName: string) {
             title: "Take a break",
             message: message,
           });
+          alarmsFired.delete(alarmName);
         }
       }
     );
