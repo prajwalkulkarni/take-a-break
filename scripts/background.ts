@@ -11,9 +11,7 @@ chrome.runtime.onInstalled.addListener(() => {
   });
   createOrUpdateAlarms();
 });
-chrome.runtime.onStartup.addListener(() => {
-  createOrUpdateAlarms();
-});
+
 chrome.runtime.onMessage.addListener((message) => {
   if (typeof message === "object") {
     Object.entries(message).forEach(([key, value]) => {
