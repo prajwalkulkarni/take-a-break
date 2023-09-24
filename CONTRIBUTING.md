@@ -70,3 +70,7 @@ When you're finished with the changes, create a pull request, also known as a PR
 ### Your PR is merged!
 
 Congratulations :tada::tada: Thank you for contributing to Take a break :sparkles:.
+
+### Footnotes
+
+This document was adapted from the open-source contribution guidelines for [Github docs.](https://github.com/github/docs/blob/main/CONTRIBUTING.md).
