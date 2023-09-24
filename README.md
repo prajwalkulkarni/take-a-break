@@ -19,6 +19,11 @@ This overlay can be dismissed before it is automatically removed after the break
 </p>
 Additionally, you can enable push notifications that broadcast a notification at every break interval. This is especially useful when you perform tasks across browser and other applications.
 
+## Running the project locally
+
+Clone this repository, and simply run:
+`yarn install`
+
 ## Contribution
 
 This project is open-sourced and accepting contributions. Kindly go through the [contribution guidelines](CONTRIBUTING.md) to get started.
