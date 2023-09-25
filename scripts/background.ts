@@ -31,11 +31,17 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     if (tabs.length > 0) {
       chrome.storage.local.set({ [alarm.name]: true });
       alarmsFired.add(alarm.name);
-      pushNotificationIfNotDuplicate(alarm.name);
-      chrome.scripting.executeScript({
-        target: { tabId: tabs[0].id! },
-        files: ["dist/content.js"],
-      });
+      chrome.scripting
+        .executeScript({
+          target: { tabId: tabs[0].id },
+          files: ["dist/content.js"],
+        })
+        .then(() => {
+          pushNotificationIfNotDuplicate(alarm.name);
+        })
+        .catch((err) => {
+          pushNotificationIfNotDuplicate(alarm.name);
+        });
     }
   });
   //   }
