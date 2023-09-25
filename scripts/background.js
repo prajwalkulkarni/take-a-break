@@ -1,7 +1,7 @@
-import { Alarms } from "./types";
-import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils";
+import { Alarms } from "./constants";
+import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils.js";
 
-const alarmsFired = new Set<string>();
+const alarmsFired = new Set();
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({
     timeout: 20,
@@ -11,6 +11,7 @@ chrome.runtime.onInstalled.addListener(() => {
   });
   createOrUpdateAlarms();
 });
+
 createOrUpdateAlarms();
 
 chrome.runtime.onMessage.addListener((message) => {
@@ -31,17 +32,22 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     if (tabs.length > 0) {
       chrome.storage.local.set({ [alarm.name]: true });
       alarmsFired.add(alarm.name);
-      pushNotificationIfNotDuplicate(alarm.name);
-      chrome.scripting.executeScript({
-        target: { tabId: tabs[0].id! },
-        files: ["dist/content.js"],
-      });
+      chrome.scripting
+        .executeScript({
+          target: { tabId: tabs[0].id },
+          files: ["dist/content.js"],
+        })
+        .then(() => {
+          pushNotificationIfNotDuplicate(alarm.name);
+        })
+        .catch((err) => {
+          pushNotificationIfNotDuplicate(alarm.name);
+        });
     }
   });
-  //   }
 });
 
-function pushNotificationIfNotDuplicate(alarmName: string) {
+function pushNotificationIfNotDuplicate(alarmName) {
   if (alarmsFired.size <= 1) {
     chrome.storage.local.get(
       [Alarms.ScreenBreak, Alarms.Water, Alarms.Walk, "showNotifications"],
@@ -66,7 +72,7 @@ function pushNotificationIfNotDuplicate(alarmName: string) {
 function createOrUpdateAlarms() {
   chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
     const { timeout, water, walk } = items;
-
+    console.log(timeout, walk, water);
     chrome.alarms.clearAll();
     // updateTimeoutWeightage({ timeout, water, walk });
 

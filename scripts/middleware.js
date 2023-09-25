@@ -1,5 +1,5 @@
 import "../popup/popup.css";
-import { validateInput } from "./utils";
+import { validateInput } from "./utils.js";
 const form = document.querySelector("form");
 const timeoutInput = document.querySelector("#timeout");
 const waterInput = document.querySelector("#water");
@@ -20,36 +20,30 @@ chrome.storage.local.get(
     waterInput?.setAttribute("value", water?.toString());
     walkInput?.setAttribute("value", walk?.toString());
 
-    timeoutLabel!.textContent = `Look away from screen - ${timeout} minutes`;
-    waterLabel!.textContent = `Drink water - ${water} minutes`;
-    walkLabel!.textContent = `Stretch/Stroll - ${walk} minutes`;
+    timeoutLabel.textContent = `Look away from screen - ${timeout} minutes`;
+    waterLabel.textContent = `Drink water - ${water} minutes`;
+    walkLabel.textContent = `Stretch/Stroll - ${walk} minutes`;
 
-    (notifications as HTMLInputElement).checked = items.showNotifications;
+    notifications.checked = items.showNotifications;
   }
 );
 
 timeoutInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#timeoutLabel");
-  label!.textContent = `Look away from screen - ${
-    (e.target as HTMLInputElement).value
-  } minutes`;
+  label.textContent = `Look away from screen - ${e.target.value} minutes`;
 });
 
 waterInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#waterLabel");
-  label!.textContent = `Drink water - ${
-    (e.target as HTMLInputElement).value
-  } minutes`;
+  label.textContent = `Drink water - ${e.target.value} minutes`;
 });
 
 walkInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#walkLabel");
-  label!.textContent = `Stretch/Stroll - ${
-    (e.target as HTMLInputElement).value
-  } minutes`;
+  label.textContent = `Stretch/Stroll - ${e.target.value} minutes`;
 });
 
 form?.addEventListener("submit", (e) => {
@@ -59,9 +53,9 @@ form?.addEventListener("submit", (e) => {
 
   const formData = new FormData(form);
 
-  const timeout = parseInt(formData.get("timeout") as string);
-  const water = parseInt(formData.get("water") as string);
-  const walk = parseInt(formData.get("walk") as string);
+  const timeout = parseInt(formData.get("timeout"));
+  const water = parseInt(formData.get("water"));
+  const walk = parseInt(formData.get("walk"));
   const showNotifications = formData.get("notifications") === "on";
 
   const submitButton = document.querySelector("button");

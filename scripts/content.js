@@ -1,7 +1,7 @@
 import "./content.css";
-import { Alarms } from "./types";
+import { Alarms } from "./constants";
 import lottie from "lottie-web";
-import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils";
+import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils.js";
 chrome.storage.local.get(
   [Alarms.ScreenBreak, Alarms.Walk, Alarms.Water],
   (items) => {
@@ -24,9 +24,7 @@ chrome.storage.local.get(
         if (checkIfTakeABreakContainerExists) {
           const h2 = document.querySelector(".takeABreak__task");
           h2?.textContent && (h2.textContent = task);
-          const lottieContainer = document.querySelector(
-            "takeABreak__lottie"
-          ) as Element;
+          const lottieContainer = document.querySelector("takeABreak__lottie");
           lottie.loadAnimation({
             container: lottieContainer,
             renderer: "svg",
