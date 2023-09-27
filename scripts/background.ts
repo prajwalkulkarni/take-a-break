@@ -44,7 +44,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
         });
     }
   });
-  //   }
 });
 
 function pushNotificationIfNotDuplicate(alarmName: string) {
