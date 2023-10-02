@@ -12,7 +12,12 @@ chrome.runtime.onInstalled.addListener(() => {
   createOrUpdateAlarms();
 });
 
-createOrUpdateAlarms();
+chrome.runtime.onStartup.addListener(() => {
+  createOrUpdateAlarms();
+});
+chrome.runtime.onSuspend.addListener(() => {
+  chrome.alarms.clearAll();
+});
 
 chrome.runtime.onMessage.addListener((message) => {
   if (typeof message === "object") {
@@ -72,9 +77,8 @@ function pushNotificationIfNotDuplicate(alarmName) {
 function createOrUpdateAlarms() {
   chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
     const { timeout, water, walk } = items;
-    console.log(timeout, walk, water);
+
     chrome.alarms.clearAll();
-    // updateTimeoutWeightage({ timeout, water, walk });
 
     if (timeout) {
       chrome.alarms.create(Alarms.ScreenBreak, {
