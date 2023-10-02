@@ -3,24 +3,27 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   entry: {
-    content: "./scripts/content.ts", // content script
-    background: "./scripts/background.ts", // background script
-    middleware: "./scripts/middleware.ts", // logic handler
+    content: "./scripts/content.js", // content script
+    background: "./scripts/background.js", // background script
+    middleware: "./scripts/middleware.js", // logic handler
   }, // entry point
   output: {
     path: path.join(__dirname, "/dist"), // output directory
     filename: "[name].js", // name of the generated bundle
   },
   resolve: {
-    extensions: [".ts", ".js", ".css"],
+    extensions: [".js", ".css"],
   },
   module: {
     rules: [
       {
-        test: /\.ts$/, // look for .js files
+        test: /\.js$/, // look for .js files
         exclude: /node_modules/, // ignore node_modules
         use: {
-          loader: "ts-loader",
+          loader: "babel-loader",
+          options: {
+            presets: [["@babel/preset-env", { targets: "defaults" }]],
+          },
         },
       },
       {

@@ -1,9 +1,9 @@
-import { Alarms, MapTask } from "./types";
+import { Alarms } from "./constants";
 import waterAnimation from "../assets/lottiefiles/water.json";
 import stretchAnimation from "../assets/lottiefiles/stretch.json";
 import lookAwayAnimation from "../assets/lottiefiles/break.json";
 
-const map = new Map<string, MapTask>();
+const map = new Map();
 
 chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
   const { timeout, water, walk } = items;
@@ -60,7 +60,7 @@ chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
   });
 });
 
-export function getMessageAndIntervalAndAnimation(alarmName: string): MapTask {
+export function getMessageAndIntervalAndAnimation(alarmName) {
   if (map.has(alarmName)) {
     return (
       map.get(alarmName) || {
@@ -74,7 +74,7 @@ export function getMessageAndIntervalAndAnimation(alarmName: string): MapTask {
   return { message: "", breaktime: 0, animation: undefined, weightage: 0 };
 }
 
-export function getTaskName(items: { [key: string]: boolean }) {
+export function getTaskName(items) {
   const alarms = Object.keys(items);
   alarms.includes("showNotifications") &&
     alarms.splice(alarms.indexOf("showNotifications"), 1);
@@ -92,16 +92,8 @@ export function getTaskName(items: { [key: string]: boolean }) {
   }
 }
 
-export const validateInput = ({
-  timeout,
-  water,
-  walk,
-}: {
-  timeout: number;
-  water: number;
-  walk: number;
-}) => {
-  if (timeout < 10 || water < 45 || walk < 30) {
+export const validateInput = ({ timeout, water, walk }) => {
+  if (timeout < 0 || water < 0 || walk < 0) {
     throw new Error(
       "Break intervals cannot be less than the minimum specified values."
     );

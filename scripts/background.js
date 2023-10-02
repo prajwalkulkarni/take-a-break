@@ -1,7 +1,7 @@
-import { Alarms } from "./types";
-import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils";
+import { Alarms } from "./constants";
+import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils.js";
 
-const alarmsFired = new Set<string>();
+const alarmsFired = new Set();
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({
     timeout: 20,
@@ -11,7 +11,13 @@ chrome.runtime.onInstalled.addListener(() => {
   });
   createOrUpdateAlarms();
 });
-createOrUpdateAlarms();
+
+chrome.runtime.onStartup.addListener(() => {
+  createOrUpdateAlarms();
+});
+chrome.runtime.onSuspend.addListener(() => {
+  chrome.alarms.clearAll();
+});
 
 chrome.runtime.onMessage.addListener((message) => {
   if (typeof message === "object") {
@@ -46,7 +52,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   });
 });
 
-function pushNotificationIfNotDuplicate(alarmName: string) {
+function pushNotificationIfNotDuplicate(alarmName) {
   if (alarmsFired.size <= 1) {
     chrome.storage.local.get(
       [Alarms.ScreenBreak, Alarms.Water, Alarms.Walk, "showNotifications"],
@@ -73,7 +79,6 @@ function createOrUpdateAlarms() {
     const { timeout, water, walk } = items;
 
     chrome.alarms.clearAll();
-    // updateTimeoutWeightage({ timeout, water, walk });
 
     if (timeout) {
       chrome.alarms.create(Alarms.ScreenBreak, {
