@@ -13,10 +13,9 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onStartup.addListener(() => {
-  createOrUpdateAlarms();
-});
-chrome.runtime.onSuspend.addListener(() => {
+  console.log("Fired on startup", new Date());
   chrome.alarms.clearAll();
+  createOrUpdateAlarms();
 });
 
 chrome.runtime.onMessage.addListener((message) => {
