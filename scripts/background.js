@@ -10,14 +10,12 @@ chrome.runtime.onInstalled.addListener(() => {
     showNotifications: true,
   });
   createOrUpdateAlarms();
+  chrome.storage.local.set({ browserOpenedTime: new Date().getTime() });
 });
 
 chrome.runtime.onStartup.addListener(() => {
   createOrUpdateAlarms();
-});
-
-chrome.runtime.onSuspend.addListener(() => {
-  chrome.alarms.clearAll();
+  chrome.storage.local.set({ browserOpenedTime: new Date().getTime() });
 });
 
 chrome.runtime.onMessage.addListener((message) => {
@@ -35,21 +33,31 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     //Execute content script when the alarm fires
-    if (tabs.length > 0) {
-      chrome.storage.local.set({ [alarm.name]: true });
-      alarmsFired.add(alarm.name);
-      chrome.scripting
-        .executeScript({
-          target: { tabId: tabs[0].id },
-          files: ["dist/content.js"],
-        })
-        .then(() => {
-          pushNotificationIfNotDuplicate(alarm.name);
-        })
-        .catch((err) => {
-          pushNotificationIfNotDuplicate(alarm.name);
-        });
-    }
+    chrome.storage.local.get(["browserOpenedTime"], (items) => {
+      const browserOpenedTime = items.browserOpenedTime;
+      const currentTime = new Date().getTime();
+      const timeDiff = currentTime - browserOpenedTime;
+      const timeDiffInMinutes = Math.floor(timeDiff / 60000);
+
+      if (timeDiffInMinutes < 10) {
+        return;
+      }
+      if (tabs.length > 0) {
+        chrome.storage.local.set({ [alarm.name]: true });
+        alarmsFired.add(alarm.name);
+        chrome.scripting
+          .executeScript({
+            target: { tabId: tabs[0].id },
+            files: ["dist/content.js"],
+          })
+          .then(() => {
+            pushNotificationIfNotDuplicate(alarm.name);
+          })
+          .catch((err) => {
+            pushNotificationIfNotDuplicate(alarm.name);
+          });
+      }
+    });
   });
 });
 
