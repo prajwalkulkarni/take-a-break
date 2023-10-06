@@ -2,6 +2,8 @@ import "./content.css";
 import { Alarms } from "./constants";
 import lottie from "lottie-web";
 import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils.js";
+
+//Since the content script here is not a module, we're using a callback to operate on the data we get from storage.
 chrome.storage.local.get(
   [Alarms.ScreenBreak, Alarms.Walk, Alarms.Water],
   (items) => {
@@ -17,7 +19,6 @@ chrome.storage.local.get(
         window.location.href.startsWith("http") ||
         window.location.href.startsWith("https")
       ) {
-        // const body = document.querySelector('body');
         const checkIfTakeABreakContainerExists = document.querySelector(
           ".takeABreak__container"
         );

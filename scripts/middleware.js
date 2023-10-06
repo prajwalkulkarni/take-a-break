@@ -14,7 +14,6 @@ chrome.storage.local.get(
   ["timeout", "water", "walk", "showNotifications"],
   (items) => {
     const { timeout, water, walk } = items;
-    console.log(timeout, timeout?.toString());
 
     timeoutInput?.setAttribute("value", timeout?.toString());
     waterInput?.setAttribute("value", water?.toString());
@@ -76,11 +75,12 @@ form?.addEventListener("submit", (e) => {
       clearTimeout(animationTimeout);
     }, 1250);
 
-    setTimeout(() => {
+    const submitButtonTimeout = setTimeout(() => {
       if (submitButton) {
         submitButton.classList.remove("takeAbreak__validate");
         submitButton.disabled = false;
       }
+      clearTimeout(submitButtonTimeout);
     }, 2350);
 
     chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
@@ -95,11 +95,12 @@ form?.addEventListener("submit", (e) => {
       clearTimeout(animationTimeout);
     }, 1250);
 
-    setTimeout(() => {
+    const submitButtonTimeout = setTimeout(() => {
       if (submitButton) {
         submitButton.classList.remove("takeAbreak__invalidate");
         submitButton.disabled = false;
       }
+      clearTimeout(submitButtonTimeout);
     }, 2350);
   }
 });

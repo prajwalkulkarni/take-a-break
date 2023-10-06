@@ -33,81 +33,86 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     //Execute content script when the alarm fires
-    chrome.storage.local.get(["browserOpenedTime"], (items) => {
-      const browserOpenedTime = items.browserOpenedTime;
-      const currentTime = new Date().getTime();
-      const timeDiff = currentTime - browserOpenedTime;
-      const timeDiffInMinutes = Math.floor(timeDiff / 60000);
 
-      if (timeDiffInMinutes < 10) {
-        return;
-      }
-      if (tabs.length > 0) {
-        chrome.storage.local.set({ [alarm.name]: true });
-        alarmsFired.add(alarm.name);
-        chrome.scripting
-          .executeScript({
-            target: { tabId: tabs[0].id },
-            files: ["dist/content.js"],
-          })
-          .then(() => {
-            pushNotificationIfNotDuplicate(alarm.name);
-          })
-          .catch((err) => {
-            pushNotificationIfNotDuplicate(alarm.name);
-          });
-      }
-    });
+    // Check the time difference between the current time and the time when the browser was opened
+    // If the difference is less than the least possible break interval, then don't show the notification
+    // This is to prevent the notification from showing up when the browser is opened after sufficient time has lapsed since the last alarm fired
+    const items = await chrome.storage.local.get(["browserOpenedTime"]);
+    const browserOpenedTime = items.browserOpenedTime;
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - browserOpenedTime;
+    const timeDiffInMinutes = Math.floor(timeDiff / 60000);
+
+    if (timeDiffInMinutes < 10) {
+      return;
+    }
+    if (tabs.length > 0) {
+      chrome.storage.local.set({ [alarm.name]: true });
+      alarmsFired.add(alarm.name);
+      chrome.scripting
+        .executeScript({
+          target: { tabId: tabs[0].id },
+          files: ["dist/content.js"],
+        })
+        .then(() => {
+          pushNotificationIfNotDuplicate(alarm.name);
+        })
+        .catch(() => {
+          pushNotificationIfNotDuplicate(alarm.name);
+        });
+    }
   });
 });
 
-function pushNotificationIfNotDuplicate(alarmName) {
+async function pushNotificationIfNotDuplicate(alarmName) {
   if (alarmsFired.size <= 1) {
-    chrome.storage.local.get(
-      [Alarms.ScreenBreak, Alarms.Water, Alarms.Walk, "showNotifications"],
-      (items) => {
-        const taskName = getTaskName(items);
-        const { message } = getMessageAndIntervalAndAnimation(taskName);
-        if (items.showNotifications) {
-          chrome.notifications.create({
-            type: "basic",
-            iconUrl: `../assets/images/${taskName}.png`,
-            title: "Take a break",
-            message: message,
-          });
-          alarmsFired.delete(alarmName);
-        }
-      }
-    );
+    const response = await chrome.storage.local.get([
+      Alarms.ScreenBreak,
+      Alarms.Water,
+      Alarms.Walk,
+      "showNotifications",
+    ]);
+
+    const taskName = getTaskName(response);
+    const { message } = getMessageAndIntervalAndAnimation(taskName);
+    if (response.showNotifications) {
+      chrome.notifications.create({
+        type: "basic",
+        iconUrl: `../assets/images/${taskName}.png`,
+        title: "Take a break",
+        message: message,
+      });
+      alarmsFired.delete(alarmName);
+    }
   } else {
     alarmsFired.delete(alarmName);
   }
 }
-function createOrUpdateAlarms() {
-  chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
-    const { timeout, water, walk } = items;
+async function createOrUpdateAlarms() {
+  const items = await chrome.storage.local.get(["timeout", "water", "walk"]);
 
-    chrome.alarms.clearAll();
+  const { timeout, water, walk } = items;
 
-    if (timeout) {
-      chrome.alarms.create(Alarms.ScreenBreak, {
-        delayInMinutes: timeout,
-        periodInMinutes: timeout,
-      });
-    }
+  chrome.alarms.clearAll();
 
-    if (water) {
-      chrome.alarms.create(Alarms.Water, {
-        delayInMinutes: water,
-        periodInMinutes: water,
-      });
-    }
+  if (timeout) {
+    chrome.alarms.create(Alarms.ScreenBreak, {
+      delayInMinutes: timeout,
+      periodInMinutes: timeout,
+    });
+  }
 
-    if (walk) {
-      chrome.alarms.create(Alarms.Walk, {
-        delayInMinutes: walk,
-        periodInMinutes: walk,
-      });
-    }
-  });
+  if (water) {
+    chrome.alarms.create(Alarms.Water, {
+      delayInMinutes: water,
+      periodInMinutes: water,
+    });
+  }
+
+  if (walk) {
+    chrome.alarms.create(Alarms.Walk, {
+      delayInMinutes: walk,
+      periodInMinutes: walk,
+    });
+  }
 }
