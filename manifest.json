@@ -15,6 +15,7 @@
     },
     "permissions":["tabs", "storage", "alarms", "notifications", "activeTab", "background", "scripting"],
     "host_permissions": ["https://*/*", "http://*/*"],
+    "description": "Take a Break is a Chrome extension that monitors and reminds you to take breaks periodically.",
     "background": {
       "service_worker": "dist/background.js"
     }
