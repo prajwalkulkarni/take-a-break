@@ -2,7 +2,7 @@ import { Alarms } from "./constants";
 import waterAnimation from "../assets/lottiefiles/water.json";
 import stretchAnimation from "../assets/lottiefiles/stretch.json";
 import lookAwayAnimation from "../assets/lottiefiles/break.json";
-
+import walkAnimation from "../assets/lottiefiles/walk.json";
 const map = new Map();
 
 chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
@@ -46,8 +46,7 @@ chrome.storage.local.get(["timeout", "water", "walk"], (items) => {
   map.set(Alarms.BreakAndWalk, {
     message: "Take a Short Walk and Look Away from the Screen",
     breaktime: 140000,
-    animation: map.get(weightageToAnimation[Math.max(timeout, walk)])
-      ?.animation,
+    animation: walkAnimation,
     weightage: 0,
   });
   map.set(Alarms.BreakAndWaterAndWalk, {
@@ -99,4 +98,17 @@ export const validateInput = ({ timeout, water, walk }) => {
     );
   }
   return true;
+};
+
+export const getBreakDurationStringInMinutesAndSeconds = (breaktime) => {
+  const breakTimeInSeconds = breaktime / 1000;
+  const minutes = Math.floor(breakTimeInSeconds / 60);
+  const seconds = Math.floor(breakTimeInSeconds % 60);
+
+  if (minutes > 0) {
+    return `${minutes} minute${minutes > 1 ? "s" : ""} ${seconds} second${
+      seconds > 1 ? "s" : ""
+    }`;
+  }
+  return `${seconds} second${seconds > 1 ? "s" : ""}`;
 };

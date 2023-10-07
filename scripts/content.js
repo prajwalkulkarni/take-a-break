@@ -1,7 +1,11 @@
 import "./content.css";
 import { Alarms } from "./constants";
 import lottie from "lottie-web";
-import { getMessageAndIntervalAndAnimation, getTaskName } from "./utils.js";
+import {
+  getBreakDurationStringInMinutesAndSeconds,
+  getMessageAndIntervalAndAnimation,
+  getTaskName,
+} from "./utils.js";
 
 //Since the content script here is not a module, we're using a callback to operate on the data we get from storage.
 chrome.storage.local.get(
@@ -81,7 +85,9 @@ chrome.storage.local.get(
 
           const countdown = setInterval(() => {
             timer -= 1000;
-            h3.innerHTML = `You can continue in ${timer / 1000} seconds`;
+            h3.innerHTML = `You can continue in ${getBreakDurationStringInMinutesAndSeconds(
+              timer
+            )}`;
           }, 1000);
 
           document.body.appendChild(div);
