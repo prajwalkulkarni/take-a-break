@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({
     timeout: 20,
     water: 120,
-    walk: 40,
+    walk: 50,
     showNotifications: true,
   });
   createOrUpdateAlarms();

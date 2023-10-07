@@ -92,7 +92,7 @@ export function getTaskName(items) {
 }
 
 export const validateInput = ({ timeout, water, walk }) => {
-  if (timeout < 0 || water < 0 || walk < 0) {
+  if (timeout < 10 || water < 45 || walk < 30) {
     throw new Error(
       "Break intervals cannot be less than the minimum specified values."
     );
