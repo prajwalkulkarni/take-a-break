@@ -53,6 +53,8 @@
     line-height: var(--line-heght);
     text-align : center;
     font-weight: 400;
+    border: none;
+    text-decoration: none;
     font-family: Arial, Helvetica, sans-serif;
 }
 
