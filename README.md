@@ -23,6 +23,9 @@ Additionally, you can enable push notifications that broadcast a notification at
 
 Clone this repository, and simply run:
 `yarn install`
+Once the dependendcies are installed, enable the developer mode in your chrome browser by navigating to extensions > manage extensions & turn on developer mode.
+
+Next, start the project by running `yarn watch` or `yarn build` (for a production build). The project is running, head back to the extension setting on the browser and click on "Load unpacked" and select the dorectory that houses this project.
 
 ## Contribution
 
