@@ -17,15 +17,18 @@ This overlay can be dismissed before it is automatically removed after the break
 <p align="center" width="100%">
 	<img src="https://github.com/prajwalkulkarni/take-a-break/assets/22348265/9ea4b2a6-2a6c-43b3-9139-a9fedc965db1" alt="Extension feature""/>
 </p>
-Additionally, you can enable push notifications that broadcast a notification at every break interval. This is especially useful when you perform tasks across browser and other applications.
+Additionally, you can enable push notifications that broadcast a notification at every break interval. This is especially useful when you perform tasks across the browser and other applications.
 
 ## Running the project locally
 
 Clone this repository, and simply run:
 `yarn install`
-Once the dependendcies are installed, enable the developer mode in your chrome browser by navigating to extensions > manage extensions & turn on developer mode.
+Once the dependencies are installed, enable the developer mode in your Chrome browser by navigating to extensions > manage extensions & turn on developer mode.
 
-Next, start the project by running `yarn watch` or `yarn build` (for a production build). The project is running, head back to the extension setting on the browser and click on "Load unpacked" and select the dorectory that houses this project.
+Next, start the project by running `yarn watch` or `yarn build` (for a production build). Once the project is running, head back to the extension settings on the browser and click on "Load unpacked" and select the directory that houses this project.
+![local_installation](https://github.com/prajwalkulkarni/take-a-break/assets/22348265/69cb3243-9a90-4198-94b6-bb1b8bf20942)
+
+Once the extension is loaded, you can play around, tweak the code, and see the changes instantly. If you're considering contributing to this project, kindly go through the contribution guidelines below.
 
 ## Contribution
 
