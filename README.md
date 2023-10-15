@@ -34,6 +34,6 @@ Once the extension is loaded, you can play around, tweak the code, and see the c
 
 This project is open-sourced and accepting contributions. Kindly go through the [contribution guidelines](CONTRIBUTING.md) to get started.
 
-🌟 **Star this Repository** 🌟
+## 🌟 **Star this Repository** 🌟
 
 If you find this project useful or interesting, please consider showing your support by starring it. Your star helps raise the project's visibility and encourages further development.
