@@ -18,6 +18,10 @@ chrome.runtime.onStartup.addListener(() => {
   chrome.storage.local.set({ browserOpenedTime: new Date().getTime() });
 });
 
+chrome.runtime.onSuspend.addListener(() => {
+  chrome.alarms.clearAll();
+});
+
 chrome.runtime.onMessage.addListener((message) => {
   if (typeof message === "object") {
     Object.entries(message).forEach(([key, value]) => {
