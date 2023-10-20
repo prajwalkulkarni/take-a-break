@@ -47,7 +47,27 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     const timeDiff = currentTime - browserOpenedTime;
     const timeDiffInMinutes = Math.floor(timeDiff / 60000);
 
-    if (timeDiffInMinutes < 10) {
+    const allAlarms = await chrome.alarms.getAll();
+
+    let nextAlarmTime = null;
+
+    if (allAlarms.length > 0) {
+      // Sort the alarms by scheduled time (earliest first)
+      allAlarms.sort((a, b) => a.scheduledTime - b.scheduledTime);
+
+      // The earliest alarm is now the next alarm to be fired
+      const nextAlarm = allAlarms[0];
+
+      // The scheduled time of the next alarm
+      nextAlarmTime = nextAlarm.scheduledTime;
+    } else {
+      console.log("No alarms are scheduled.");
+    }
+
+    if (
+      timeDiffInMinutes < 10 ||
+      Math.abs(nextAlarmTime - currentTime) > 60000
+    ) {
       return;
     }
     if (tabs.length > 0) {
