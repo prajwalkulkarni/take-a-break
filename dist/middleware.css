@@ -1,3 +1,6 @@
+/*!*******************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./popup/popup.css ***!
+  \*******************************************************************/
 :root{
     --color-primary: #2589BD;
     --color-success: #52c41a;
@@ -183,3 +186,5 @@ button:hover{
         transform: rotate(360deg)
     }
 }
+
+/*# sourceMappingURL=middleware.css.map*/

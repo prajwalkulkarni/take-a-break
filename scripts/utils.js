@@ -112,3 +112,11 @@ export const getBreakDurationStringInMinutesAndSeconds = (breaktime) => {
   }
   return `${seconds} second${seconds > 1 ? "s" : ""}`;
 };
+
+export async function getNextAlarmTime() {
+  const allAlarms = await chrome.alarms.getAll();
+  allAlarms.sort((a, b) => a.scheduledTime - b.scheduledTime);
+  const nextAlarm = allAlarms[0].scheduledTime;
+
+  return nextAlarm;
+}
