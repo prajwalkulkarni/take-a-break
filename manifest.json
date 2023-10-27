@@ -1,7 +1,7 @@
 {
     "manifest_version":3,
     "name": "Take a Break",
-    "version": "1.0.3",
+    "version": "1.0.5",
     "action": {
         "default_icon": "assets/images/logo.png",
         "default_popup": "dist/popup.html",
@@ -13,7 +13,7 @@
         "48": "assets/images/icon48.png",
         "128": "assets/images/icon128.png"
     },
-    "permissions":["tabs", "storage", "alarms", "notifications", "activeTab", "background", "scripting"],
+    "permissions":["storage", "alarms", "notifications", "background", "scripting"],
     "host_permissions": ["https://*/*", "http://*/*"],
     "description": "Take a Break is a Chrome extension that monitors and reminds you to take breaks periodically.",
     "background": {
