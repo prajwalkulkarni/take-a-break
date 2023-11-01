@@ -66,8 +66,10 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
+  box-shadow: none;
 }
 
 .takeABreak__container > .takeABreak__dismiss:hover{
   background-color:#1c75a5;
+  box-shadow: none;
 }
