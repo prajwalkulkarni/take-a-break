@@ -7,19 +7,22 @@ import {
 
 const alarmsFired = new Set();
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.set({
-    timeout: 20,
-    water: 120,
-    walk: 50,
-    showNotifications: true,
-  });
-  createOrUpdateAlarms().then(() => {
-    getNextAlarmTime().then((nextAlarm) => {
-      chrome.storage.local.set({
-        nextScheduledAlarm: nextAlarm,
+  chrome.storage.local
+    .set({
+      timeout: 20,
+      water: 120,
+      walk: 50,
+      showNotifications: true,
+    })
+    .then(() => {
+      createOrUpdateAlarms().then(() => {
+        getNextAlarmTime().then((nextAlarm) => {
+          chrome.storage.local.set({
+            nextScheduledAlarm: nextAlarm,
+          });
+        });
       });
     });
-  });
   chrome.storage.local.set({ browserOpenedTime: new Date().getTime() });
 });
 
@@ -49,6 +52,7 @@ chrome.runtime.onMessage.addListener((message) => {
         chrome.storage.local.set({
           nextScheduledAlarm: nextAlarm,
         });
+        console.log("Next alarm", nextAlarm);
       });
     });
   }
@@ -76,30 +80,29 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       "nextScheduledAlarm",
     ]);
 
-    // If the next scheduled alarm is more than a minute away, then don't show the notification - 1 minute tolerance
+    // If the next scheduled/fired alarm from the queue is more than a minute away, then don't show the notification - 1 minute tolerance
     if (Math.abs(nextScheduledAlarm - Date.now()) > 60000) {
       await createOrUpdateAlarms();
       const upcomingAlarm = await getNextAlarmTime();
       await chrome.storage.local.set({ nextScheduledAlarm: upcomingAlarm });
       return;
     }
-    if (tabs.length > 0) {
-      chrome.storage.local.set({ [alarm.name]: true });
-      const nextAlarm = await getNextAlarmTime();
-      alarmsFired.add(alarm.name);
-      chrome.scripting
-        .executeScript({
-          target: { tabId: tabs[0].id },
-          files: ["dist/content.js"],
-        })
-        .then(() => {
-          pushNotificationIfNotDuplicate(alarm.name);
-        })
-        .catch(() => {
-          pushNotificationIfNotDuplicate(alarm.name);
-        });
-      chrome.storage.local.set({ nextScheduledAlarm: nextAlarm });
-    }
+
+    chrome.storage.local.set({ [alarm.name]: true });
+    const nextAlarm = await getNextAlarmTime();
+    alarmsFired.add(alarm.name);
+    chrome.scripting
+      .executeScript({
+        target: { tabId: tabs[0].id },
+        files: ["dist/content.js"],
+      })
+      .then(() => {
+        pushNotificationIfNotDuplicate(alarm.name);
+      })
+      .catch(() => {
+        pushNotificationIfNotDuplicate(alarm.name);
+      });
+    chrome.storage.local.set({ nextScheduledAlarm: nextAlarm });
   });
 });
 
@@ -132,6 +135,7 @@ async function createOrUpdateAlarms() {
 
   const { timeout, water, walk } = items;
 
+  console.log(timeout, water, walk);
   chrome.alarms.clearAll();
 
   if (timeout) {
