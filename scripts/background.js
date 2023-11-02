@@ -48,7 +48,8 @@ chrome.runtime.onSuspend.addListener(() => {
   chrome.alarms.clearAll();
 });
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  sendResponse({ success: true });
   if (typeof message === "object") {
     Object.entries(message).forEach(([key, value]) => {
       chrome.storage.local.set({ [key]: value });
@@ -59,9 +60,11 @@ chrome.runtime.onMessage.addListener((message) => {
         chrome.storage.local.set({
           nextScheduledAlarm: nextAlarm,
         });
+        sendResponse({ success: true });
       });
     });
   }
+  return true;
 });
 //Listen for the alarm to fire
 chrome.alarms.onAlarm.addListener((alarm) => {

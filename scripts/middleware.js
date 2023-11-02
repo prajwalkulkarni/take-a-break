@@ -86,7 +86,7 @@ form?.addEventListener("submit", (e) => {
     chrome.runtime.sendMessage(
       { timeout, water, walk, showNotifications },
       (response) => {
-        if (arguments.length === 0) {
+        if (!response) {
           chrome.runtime.reload();
         }
       }
