@@ -83,7 +83,14 @@ form?.addEventListener("submit", (e) => {
       clearTimeout(submitButtonTimeout);
     }, 2350);
 
-    chrome.runtime.sendMessage({ timeout, water, walk, showNotifications });
+    chrome.runtime.sendMessage(
+      { timeout, water, walk, showNotifications },
+      (response) => {
+        if (arguments.length === 0) {
+          chrome.runtime.reload();
+        }
+      }
+    );
   } catch (err) {
     //Remove animation class after 1 second
     const animationTimeout = setTimeout(() => {

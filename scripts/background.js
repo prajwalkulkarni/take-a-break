@@ -22,18 +22,25 @@ chrome.runtime.onInstalled.addListener(() => {
           });
         });
       });
+    })
+    .catch(() => {
+      chrome.runtime.reload();
     });
   chrome.storage.local.set({ browserOpenedTime: new Date().getTime() });
 });
 
 chrome.runtime.onStartup.addListener(() => {
-  createOrUpdateAlarms().then(() => {
-    getNextAlarmTime().then((nextAlarm) => {
-      chrome.storage.local.set({
-        nextScheduledAlarm: nextAlarm,
+  createOrUpdateAlarms()
+    .then(() => {
+      getNextAlarmTime().then((nextAlarm) => {
+        chrome.storage.local.set({
+          nextScheduledAlarm: nextAlarm,
+        });
       });
+    })
+    .catch(() => {
+      chrome.runtime.reload();
     });
-  });
   chrome.storage.local.set({ browserOpenedTime: new Date().getTime() });
 });
 
@@ -52,7 +59,6 @@ chrome.runtime.onMessage.addListener((message) => {
         chrome.storage.local.set({
           nextScheduledAlarm: nextAlarm,
         });
-        console.log("Next alarm", nextAlarm);
       });
     });
   }
