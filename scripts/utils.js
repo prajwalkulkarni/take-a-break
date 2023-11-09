@@ -116,7 +116,7 @@ export const getBreakDurationStringInMinutesAndSeconds = (breaktime) => {
 export async function getNextAlarmTime() {
   const allAlarms = await chrome.alarms.getAll();
   allAlarms.sort((a, b) => a.scheduledTime - b.scheduledTime);
-  const nextAlarm = allAlarms[0].scheduledTime;
+  const nextAlarm = allAlarms[1].scheduledTime;
 
   return nextAlarm;
 }

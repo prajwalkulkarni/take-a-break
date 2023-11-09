@@ -16,7 +16,6 @@
   flex-direction : column;
   justify-content : center;
   align-items : center;
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 .takeABreak__lottie{
@@ -61,6 +60,7 @@
 .takeABreak__container > .takeABreak__dismiss{
   color: #fff;
   padding: 8px;
+  font-family: Arial, Helvetica, sans-serif;
   background-color: #2589BD;
   border-radius: 4px;
   border: none;
