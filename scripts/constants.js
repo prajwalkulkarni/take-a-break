@@ -6,4 +6,5 @@ export const Alarms = {
   BreakAndWater: "BREAK_WATER",
   BreakAndWalk: "BREAK_WALK",
   BreakAndWaterAndWalk: "BREAK_WATER_WALK",
+  WatchDog: "WATCH_DOG",
 };

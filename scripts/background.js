@@ -60,7 +60,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.storage.local.set({
           nextScheduledAlarm: nextAlarm,
         });
-        sendResponse({ success: true });
       });
     });
   }
@@ -69,6 +68,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 //Listen for the alarm to fire
 chrome.alarms.onAlarm.addListener((alarm) => {
   console.log("Fired", alarm.name);
+
+  if (alarm.name === Alarms.WatchDog) {
+    return;
+  }
 
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     //Execute content script when the alarm fires
@@ -144,27 +147,44 @@ async function createOrUpdateAlarms() {
 
   const { timeout, water, walk } = items;
 
-  console.log(timeout, water, walk);
-  chrome.alarms.clearAll();
+  await chrome.alarms.clearAll();
 
-  if (timeout) {
-    chrome.alarms.create(Alarms.ScreenBreak, {
+  chrome.alarms
+    .create(Alarms.WatchDog, {
+      delayInMinutes: 0.5,
+      periodInMinutes: 0.5,
+    })
+    .catch(() => {
+      console.log("Error creating alarm", Alarms.WatchDog);
+      chrome.runtime.reload();
+    });
+  chrome.alarms
+    .create(Alarms.ScreenBreak, {
       delayInMinutes: timeout,
       periodInMinutes: timeout,
+    })
+    .catch(() => {
+      console.log("Error creating alarm", Alarms.ScreenBreak);
+      chrome.runtime.reload();
     });
-  }
 
-  if (water) {
-    chrome.alarms.create(Alarms.Water, {
+  chrome.alarms
+    .create(Alarms.Water, {
       delayInMinutes: water,
       periodInMinutes: water,
+    })
+    .catch(() => {
+      console.log("Error creating alarm", Alarms.Water);
+      chrome.runtime.reload();
     });
-  }
 
-  if (walk) {
-    chrome.alarms.create(Alarms.Walk, {
+  chrome.alarms
+    .create(Alarms.Walk, {
       delayInMinutes: walk,
       periodInMinutes: walk,
+    })
+    .catch(() => {
+      console.log("Error creating alarm", Alarms.Walk);
+      chrome.runtime.reload();
     });
-  }
 }
