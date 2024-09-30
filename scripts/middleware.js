@@ -1,5 +1,5 @@
 import "../popup/popup.css";
-import { validateInput } from "./utils.js";
+import { encodeHTMLEntities, validateInput } from "./utils.js";
 const form = document.querySelector("form");
 const timeoutInput = document.querySelector("#timeout");
 const waterInput = document.querySelector("#water");
@@ -19,9 +19,9 @@ chrome.storage.local.get(
     waterInput?.setAttribute("value", water?.toString());
     walkInput?.setAttribute("value", walk?.toString());
 
-    timeoutLabel.textContent = `Look away from screen - ${timeout} minutes`;
-    waterLabel.textContent = `Drink water - ${water} minutes`;
-    walkLabel.textContent = `Stretch/Stroll - ${walk} minutes`;
+    timeoutLabel.textContent = `Look away from screen - every ${timeout} minutes`;
+    waterLabel.textContent = `Drink water - every ${water} minutes`;
+    walkLabel.textContent = `Stretch/Stroll - every ${walk} minutes`;
 
     notifications.checked = items.showNotifications;
   }
@@ -30,19 +30,19 @@ chrome.storage.local.get(
 timeoutInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#timeoutLabel");
-  label.textContent = `Look away from screen - ${e.target.value} minutes`;
+  label.textContent = `Look away from screen - every ${e.target.value} minutes`;
 });
 
 waterInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#waterLabel");
-  label.textContent = `Drink water - ${e.target.value} minutes`;
+  label.textContent = `Drink water - every ${e.target.value} minutes`;
 });
 
 walkInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#walkLabel");
-  label.textContent = `Stretch/Stroll - ${e.target.value} minutes`;
+  label.textContent = `Stretch/Stroll - every ${e.target.value} minutes`;
 });
 
 form?.addEventListener("submit", (e) => {
@@ -109,5 +109,26 @@ form?.addEventListener("submit", (e) => {
       }
       clearTimeout(submitButtonTimeout);
     }, 2350);
+  }
+});
+
+const accordion = document.getElementsByClassName("accordion");
+
+accordion[0].addEventListener("click", function (e) {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  e.stopPropagation();
+  /* Toggle between adding and removing the "active" class,
+  to highlight the button that controls the panel */
+  this.classList.toggle("active");
+
+  /* Toggle between hiding and showing the active panel */
+  const panel = this.nextElementSibling;
+  if (panel.style.display === "block") {
+    panel.style.display = "none";
+    this.innerHTML = `Advanced Settings &#9654;`;
+  } else {
+    panel.style.display = "block";
+    this.innerHTML = `Advanced Settings &#9660;`;
   }
 });
