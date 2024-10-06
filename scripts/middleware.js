@@ -1,5 +1,5 @@
 import "../popup/popup.css";
-import { encodeHTMLEntities, validateInput } from "./utils.js";
+import { validateInput } from "./utils.js";
 const form = document.querySelector("form");
 const timeoutInput = document.querySelector("#timeout");
 const waterInput = document.querySelector("#water");
@@ -9,6 +9,14 @@ const timeoutLabel = document.querySelector("#timeoutLabel");
 const waterLabel = document.querySelector("#waterLabel");
 const walkLabel = document.querySelector("#walkLabel");
 const notifications = document.querySelector("#notifications");
+
+const walkDurationInput = document.querySelector("#walkDuration");
+const waterDurationInput = document.querySelector("#waterDuration");
+const lookawayDurationInput = document.querySelector("#lookawayDuration");
+
+const walkDurationLabel = document.querySelector("#walkDurationLabel");
+const lookAwayDurationLabel = document.querySelector("#lookawayDurationLabel");
+const waterDurationLabel = document.querySelector("#waterDurationLabel");
 
 chrome.storage.local.get(
   ["timeout", "water", "walk", "showNotifications"],
@@ -43,6 +51,18 @@ walkInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#walkLabel");
   label.textContent = `Stretch/Stroll - every ${e.target.value} minutes`;
+});
+
+lookawayDurationInput?.addEventListener("input", (e) => {
+  lookAwayDurationLabel.textContent = `Look away from screen duration: ${e.target.value} seconds`;
+});
+
+waterDurationInput?.addEventListener("input", (e) => {
+  waterDurationLabel.textContent = `Stretch/Stroll duration: ${e.target.value} seconds`;
+});
+
+walkDurationInput?.addEventListener("input", (e) => {
+  walkDurationLabel.textContent = `Drink water duration: ${e.target.value} seconds`;
 });
 
 form?.addEventListener("submit", (e) => {
@@ -126,6 +146,7 @@ accordion[0].addEventListener("click", function (e) {
   const panel = this.nextElementSibling;
   if (panel.style.display === "block") {
     panel.style.display = "none";
+    document.querySelector("html").style.height = "320px";
     this.innerHTML = `Advanced Settings &#9654;`;
   } else {
     panel.style.display = "block";
