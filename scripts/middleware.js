@@ -77,7 +77,7 @@ form?.addEventListener("submit", (e) => {
   const walk = parseInt(formData.get("walk"));
   const showNotifications = formData.get("notifications") === "on";
 
-  const submitButton = document.querySelector("button");
+  const submitButton = document.querySelector("button[type='submit']");
 
   submitButton?.classList.add("takeABreak__button--animate");
 

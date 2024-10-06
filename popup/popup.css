@@ -112,16 +112,15 @@ button[type="submit"]:hover {
     background-color: #1c75a5;
 }
 
-.takeABreak__button--animate {
+button.takeABreak__button--animate {
     width: 100%;
-
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
 }
 
-.takeABreak__button--animate::after {
+button.takeABreak__button--animate::after {
     position: absolute;
     content: "";
     border-radius: 4px;
@@ -133,7 +132,7 @@ button[type="submit"]:hover {
     background-color: var(--color-primary);
 }
 
-.takeABreak__button--animate::before {
+button.takeABreak__button--animate::before {
     content: "";
     height: 20px;
     width: 20px;
@@ -149,33 +148,33 @@ button[type="submit"]:hover {
     animation: submit-animation 1s 0.25s ease-in-out infinite;
 }
 
-.takeABreak__validate {
+button.takeABreak__validate {
     font-size: medium;
     color: white;
     background: var(--color-success);
     transition: background-color 0.5s ease-in;
 }
 
-.takeABreak__validate:hover {
+button.takeABreak__validate:hover {
     background-color: var(--color-success);
 }
 
-.takeABreak__validate::after {
+button.takeABreak__validate::after {
     content: "Settings saved";
 }
 
-.takeABreak__invalidate {
+button.takeABreak__invalidate {
     font-size: medium;
     color: white;
     background: var(--color-failure);
     transition: background-color 0.5s ease-in;
 }
 
-.takeABreak__invalidate:hover {
+button.takeABreak__invalidate:hover {
     background-color: var(--color-failure);
 }
 
-.takeABreak__invalidate::after {
+button.takeABreak__invalidate::after {
     content: "Settings could not be saved";
 }
 
@@ -198,7 +197,7 @@ button.accordion {
     text-align: left;
     border: none;
     outline: none;
-    transition: 0.4s;
+    transition: 0.4s height ease-in-out;
     padding: 2px;
 }
 
