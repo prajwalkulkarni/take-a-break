@@ -10,6 +10,14 @@ const waterLabel = document.querySelector("#waterLabel");
 const walkLabel = document.querySelector("#walkLabel");
 const notifications = document.querySelector("#notifications");
 
+const walkDurationInput = document.querySelector("#walkDuration");
+const waterDurationInput = document.querySelector("#waterDuration");
+const lookawayDurationInput = document.querySelector("#lookawayDuration");
+
+const walkDurationLabel = document.querySelector("#walkDurationLabel");
+const lookAwayDurationLabel = document.querySelector("#lookawayDurationLabel");
+const waterDurationLabel = document.querySelector("#waterDurationLabel");
+
 chrome.storage.local.get(
   ["timeout", "water", "walk", "showNotifications"],
   (items) => {
@@ -19,9 +27,9 @@ chrome.storage.local.get(
     waterInput?.setAttribute("value", water?.toString());
     walkInput?.setAttribute("value", walk?.toString());
 
-    timeoutLabel.textContent = `Look away from screen - ${timeout} minutes`;
-    waterLabel.textContent = `Drink water - ${water} minutes`;
-    walkLabel.textContent = `Stretch/Stroll - ${walk} minutes`;
+    timeoutLabel.textContent = `Look away from screen - every ${timeout} minutes`;
+    waterLabel.textContent = `Drink water - every ${water} minutes`;
+    walkLabel.textContent = `Stretch/Stroll - every ${walk} minutes`;
 
     notifications.checked = items.showNotifications;
   }
@@ -30,19 +38,31 @@ chrome.storage.local.get(
 timeoutInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#timeoutLabel");
-  label.textContent = `Look away from screen - ${e.target.value} minutes`;
+  label.textContent = `Look away from screen - every ${e.target.value} minutes`;
 });
 
 waterInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#waterLabel");
-  label.textContent = `Drink water - ${e.target.value} minutes`;
+  label.textContent = `Drink water - every ${e.target.value} minutes`;
 });
 
 walkInput?.addEventListener("input", (e) => {
   //Update the label with the current slider value
   const label = document.querySelector("#walkLabel");
-  label.textContent = `Stretch/Stroll - ${e.target.value} minutes`;
+  label.textContent = `Stretch/Stroll - every ${e.target.value} minutes`;
+});
+
+lookawayDurationInput?.addEventListener("input", (e) => {
+  lookAwayDurationLabel.textContent = `Look away from screen duration: ${e.target.value} seconds`;
+});
+
+waterDurationInput?.addEventListener("input", (e) => {
+  waterDurationLabel.textContent = `Stretch/Stroll duration: ${e.target.value} seconds`;
+});
+
+walkDurationInput?.addEventListener("input", (e) => {
+  walkDurationLabel.textContent = `Drink water duration: ${e.target.value} seconds`;
 });
 
 form?.addEventListener("submit", (e) => {
@@ -57,7 +77,7 @@ form?.addEventListener("submit", (e) => {
   const walk = parseInt(formData.get("walk"));
   const showNotifications = formData.get("notifications") === "on";
 
-  const submitButton = document.querySelector("button");
+  const submitButton = document.querySelector("button[type='submit']");
 
   submitButton?.classList.add("takeABreak__button--animate");
 
@@ -109,5 +129,27 @@ form?.addEventListener("submit", (e) => {
       }
       clearTimeout(submitButtonTimeout);
     }, 2350);
+  }
+});
+
+const accordion = document.getElementsByClassName("accordion");
+
+accordion[0].addEventListener("click", function (e) {
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  e.stopPropagation();
+  /* Toggle between adding and removing the "active" class,
+  to highlight the button that controls the panel */
+  this.classList.toggle("active");
+
+  /* Toggle between hiding and showing the active panel */
+  const panel = this.nextElementSibling;
+  if (panel.style.display === "block") {
+    panel.style.display = "none";
+    document.querySelector("html").style.height = "320px";
+    this.innerHTML = `Advanced Settings &#9654;`;
+  } else {
+    panel.style.display = "block";
+    this.innerHTML = `Advanced Settings &#9660;`;
   }
 });
