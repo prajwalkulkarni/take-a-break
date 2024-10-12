@@ -26,6 +26,7 @@ chrome.storage.local.get(
         const checkIfTakeABreakContainerExists = document.querySelector(
           ".takeABreak__container"
         );
+
         if (checkIfTakeABreakContainerExists) {
           const h2 = document.querySelector(".takeABreak__task");
           h2?.textContent && (h2.textContent = task);
@@ -40,10 +41,21 @@ chrome.storage.local.get(
           const h3 = document.querySelector(".takeABreak__timer");
           const timer = interval;
           h3 &&
-            (h3.textContent = `You can continue in ${timer / 1000} seconds`);
+            (h3.textContent = `You can continue in ${getBreakDurationStringInMinutesAndSeconds(
+              timer
+            )}`);
         } else {
           const div = document.createElement("div");
           div.className = "takeABreak__container";
+          let audio = document.createElement("audio");
+          audio.src = chrome.runtime.getURL("assets/audio/breakover.mp3"); // audio file stored in the extension
+          audio.id = "chrome-extension-audio";
+          audio.controls = false;
+
+          // Append the audio element to the body of the webpage
+          document.body.appendChild(audio);
+
+          // Optionally, play the audio programmatically
 
           const lottieContainer = document.createElement("div");
           lottieContainer.className = "takeABreak__lottie";
@@ -85,6 +97,9 @@ chrome.storage.local.get(
 
           const countdown = setInterval(() => {
             timer -= 1000;
+            if (timer === 6000) {
+              audio.play();
+            }
             h3.innerHTML = `You can continue in ${getBreakDurationStringInMinutesAndSeconds(
               timer
             )}`;

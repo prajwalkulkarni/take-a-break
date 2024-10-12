@@ -8,3 +8,5 @@ export const Alarms = {
   BreakAndWaterAndWalk: "BREAK_WATER_WALK",
   WatchDog: "WATCH_DOG",
 };
+
+export const TO_MS_MULTIPLER = 1000;

@@ -1,5 +1,10 @@
 import "../popup/popup.css";
-import { validateInput } from "./utils.js";
+import { TO_MS_MULTIPLER } from "./constants.js";
+import {
+  getBreakDurationStringInMinutesAndSeconds,
+  getDurationInMS,
+  validateInput,
+} from "./utils.js";
 const form = document.querySelector("form");
 const timeoutInput = document.querySelector("#timeout");
 const waterInput = document.querySelector("#water");
@@ -19,17 +24,46 @@ const lookAwayDurationLabel = document.querySelector("#lookawayDurationLabel");
 const waterDurationLabel = document.querySelector("#waterDurationLabel");
 
 chrome.storage.local.get(
-  ["timeout", "water", "walk", "showNotifications"],
+  [
+    "timeout",
+    "water",
+    "walk",
+    "showNotifications",
+    "lookawayDuration",
+    "waterDuration",
+    "walkDuration",
+  ],
   (items) => {
-    const { timeout, water, walk } = items;
+    const {
+      timeout,
+      water,
+      walk,
+      lookawayDuration,
+      walkDuration,
+      waterDuration,
+    } = items;
 
     timeoutInput?.setAttribute("value", timeout?.toString());
     waterInput?.setAttribute("value", water?.toString());
     walkInput?.setAttribute("value", walk?.toString());
 
+    lookawayDurationInput?.setAttribute("value", lookawayDuration / 1000);
+    walkDurationInput?.setAttribute("value", walkDuration / 1000);
+    waterDurationInput?.setAttribute("value", waterDuration / 1000);
+
     timeoutLabel.textContent = `Look away from screen - every ${timeout} minutes`;
     waterLabel.textContent = `Drink water - every ${water} minutes`;
     walkLabel.textContent = `Stretch/Stroll - every ${walk} minutes`;
+
+    lookAwayDurationLabel.textContent = `Look away from screen duration - ${getBreakDurationStringInMinutesAndSeconds(
+      lookawayDuration
+    )}`;
+    walkDurationLabel.textContent = `Stretch/Stroll duration - ${getBreakDurationStringInMinutesAndSeconds(
+      walkDuration
+    )}`;
+    waterDurationLabel.textContent = `Drink water duration - ${getBreakDurationStringInMinutesAndSeconds(
+      waterDuration
+    )}`;
 
     notifications.checked = items.showNotifications;
   }
@@ -54,15 +88,24 @@ walkInput?.addEventListener("input", (e) => {
 });
 
 lookawayDurationInput?.addEventListener("input", (e) => {
-  lookAwayDurationLabel.textContent = `Look away from screen duration: ${e.target.value} seconds`;
+  const durationInMs = getDurationInMS(e);
+  lookAwayDurationLabel.textContent = `Look away from screen duration: ${getBreakDurationStringInMinutesAndSeconds(
+    durationInMs
+  )}`;
 });
 
 waterDurationInput?.addEventListener("input", (e) => {
-  waterDurationLabel.textContent = `Stretch/Stroll duration: ${e.target.value} seconds`;
+  const durationInMs = getDurationInMS(e);
+  waterDurationLabel.textContent = `Drink water duration: ${getBreakDurationStringInMinutesAndSeconds(
+    durationInMs
+  )}`;
 });
 
 walkDurationInput?.addEventListener("input", (e) => {
-  walkDurationLabel.textContent = `Drink water duration: ${e.target.value} seconds`;
+  const durationInMs = getDurationInMS(e);
+  walkDurationLabel.textContent = `Stretch/Stroll duration: ${getBreakDurationStringInMinutesAndSeconds(
+    durationInMs
+  )}`;
 });
 
 form?.addEventListener("submit", (e) => {
@@ -76,6 +119,12 @@ form?.addEventListener("submit", (e) => {
   const water = parseInt(formData.get("water"));
   const walk = parseInt(formData.get("walk"));
   const showNotifications = formData.get("notifications") === "on";
+
+  const lookawayDuration =
+    parseInt(formData.get("lookawayDuration")) * TO_MS_MULTIPLER;
+  const walkDuration = parseInt(formData.get("walkDuration")) * TO_MS_MULTIPLER;
+  const waterDuration =
+    parseInt(formData.get("waterDuration")) * TO_MS_MULTIPLER;
 
   const submitButton = document.querySelector("button[type='submit']");
 
@@ -104,7 +153,15 @@ form?.addEventListener("submit", (e) => {
     }, 2350);
 
     chrome.runtime.sendMessage(
-      { timeout, water, walk, showNotifications },
+      {
+        timeout,
+        water,
+        walk,
+        showNotifications,
+        lookawayDuration,
+        walkDuration,
+        waterDuration,
+      },
       (response) => {
         if (!response) {
           chrome.runtime.reload();
@@ -132,9 +189,9 @@ form?.addEventListener("submit", (e) => {
   }
 });
 
-const accordion = document.getElementsByClassName("accordion");
+const accordion = document.getElementsByClassName("accordion")[0];
 
-accordion[0].addEventListener("click", function (e) {
+accordion.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopImmediatePropagation();
   e.stopPropagation();
