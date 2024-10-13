@@ -14,6 +14,9 @@ const timeoutLabel = document.querySelector("#timeoutLabel");
 const waterLabel = document.querySelector("#waterLabel");
 const walkLabel = document.querySelector("#walkLabel");
 const notifications = document.querySelector("#notifications");
+const notifyOnBreakCompletionInput = document.querySelector(
+  "#notifyOnBreakCompletion"
+);
 
 const walkDurationInput = document.querySelector("#walkDuration");
 const waterDurationInput = document.querySelector("#waterDuration");
@@ -32,6 +35,7 @@ chrome.storage.local.get(
     "lookawayDuration",
     "waterDuration",
     "walkDuration",
+    "notifyOnBreakCompletion",
   ],
   (items) => {
     const {
@@ -41,6 +45,7 @@ chrome.storage.local.get(
       lookawayDuration,
       walkDuration,
       waterDuration,
+      notifyOnBreakCompletion,
     } = items;
 
     timeoutInput?.setAttribute("value", timeout?.toString());
@@ -66,6 +71,7 @@ chrome.storage.local.get(
     )}`;
 
     notifications.checked = items.showNotifications;
+    notifyOnBreakCompletionInput.checked = notifyOnBreakCompletion;
   }
 );
 
@@ -119,6 +125,8 @@ form?.addEventListener("submit", (e) => {
   const water = parseInt(formData.get("water"));
   const walk = parseInt(formData.get("walk"));
   const showNotifications = formData.get("notifications") === "on";
+  const notifyOnBreakCompletion =
+    formData.get("notifyOnBreakCompletion") === "on";
 
   const lookawayDuration =
     parseInt(formData.get("lookawayDuration")) * TO_MS_MULTIPLER;
@@ -161,6 +169,7 @@ form?.addEventListener("submit", (e) => {
         lookawayDuration,
         walkDuration,
         waterDuration,
+        notifyOnBreakCompletion,
       },
       (response) => {
         if (!response) {

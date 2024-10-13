@@ -24,12 +24,6 @@ chrome.storage.local.get(
       waterDuration,
     } = items;
 
-    console.log(
-      lookawayDuration,
-      walkDuration,
-      waterDuration,
-      typeof lookawayDuration
-    );
     const weightageToAnimation = {
       [timeout]: Alarms.ScreenBreak,
       [water]: Alarms.Water,
@@ -100,8 +94,11 @@ export function getMessageAndIntervalAndAnimation(alarmName) {
 
 export function getTaskName(items) {
   const alarms = Object.keys(items);
-  alarms.includes("showNotifications") &&
-    alarms.splice(alarms.indexOf("showNotifications"), 1);
+  ["showNotifications", "notifyOnBreakCompletion"].forEach((item) => {
+    if (alarms.includes(item)) {
+      alarms.splice(alarms.indexOf(item), 1);
+    }
+  });
 
   if (alarms.length === 3) {
     return Alarms.BreakAndWaterAndWalk;
@@ -117,11 +114,11 @@ export function getTaskName(items) {
 }
 
 export const validateInput = ({ timeout, water, walk }) => {
-  // if (timeout < 10 || water < 45 || walk < 30) {
-  //   throw new Error(
-  //     "Break intervals cannot be less than the minimum specified values."
-  //   );
-  // }
+  if (timeout < 10 || water < 45 || walk < 30) {
+    throw new Error(
+      "Break intervals cannot be less than the minimum specified values."
+    );
+  }
   return true;
 };
 

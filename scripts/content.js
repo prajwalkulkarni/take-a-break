@@ -9,7 +9,7 @@ import {
 
 //Since the content script here is not a module, we're using a callback to operate on the data we get from storage.
 chrome.storage.local.get(
-  [Alarms.ScreenBreak, Alarms.Walk, Alarms.Water],
+  [Alarms.ScreenBreak, Alarms.Walk, Alarms.Water, "notifyOnBreakCompletion"],
   (items) => {
     try {
       const taskName = getTaskName(items);
@@ -47,13 +47,17 @@ chrome.storage.local.get(
         } else {
           const div = document.createElement("div");
           div.className = "takeABreak__container";
-          let audio = document.createElement("audio");
-          audio.src = chrome.runtime.getURL("assets/audio/breakover.mp3"); // audio file stored in the extension
-          audio.id = "chrome-extension-audio";
-          audio.controls = false;
+          let audio;
 
-          // Append the audio element to the body of the webpage
-          document.body.appendChild(audio);
+          if (items["notifyOnBreakCompletion"]) {
+            audio = document.createElement("audio");
+            audio.src = chrome.runtime.getURL("assets/audio/breakover.mp3"); // audio file stored in the extension
+            audio.id = "chrome-extension-audio";
+            audio.controls = false;
+
+            // Append the audio element to the body of the webpage
+            document.body.appendChild(audio);
+          }
 
           // Optionally, play the audio programmatically
 
@@ -97,7 +101,7 @@ chrome.storage.local.get(
 
           const countdown = setInterval(() => {
             timer -= 1000;
-            if (timer === 6000) {
+            if (timer === 6000 && items["notifyOnBreakCompletion"]) {
               audio.play();
             }
             h3.innerHTML = `You can continue in ${getBreakDurationStringInMinutesAndSeconds(

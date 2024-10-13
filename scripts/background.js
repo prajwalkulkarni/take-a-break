@@ -13,6 +13,10 @@ chrome.runtime.onInstalled.addListener(() => {
       water: 120,
       walk: 50,
       showNotifications: true,
+      lookawayDuration: 20000,
+      waterDuration: 60000,
+      walkDuration: 120000,
+      notifyOnBreakCompletion: false,
     })
     .then(() => {
       createOrUpdateAlarms().then(() => {
