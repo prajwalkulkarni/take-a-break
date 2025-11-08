@@ -8,6 +8,8 @@
 <body>
   <h1>Take a break</h1>
 
+
+  <h3 id="next-break">Next Break in:</h3>
   <form name="intervals" id="timeoutIntervals">
     <label for="timeout" id="timeoutLabel">Look away from screen - every 20 minutes</label>
     <input type="range" id="timeout" name="timeout" value="20" min="10" max="60" step="5" /><br>
@@ -50,6 +52,14 @@
 
       </label>
       <span>Enable notifications</span>
+    </div>
+
+    <div class="notifications-container">
+      <input type="checkbox" id="dnd" name="dnd" />
+      <label for="dnd">
+
+      </label>
+      <span>DND</span>
     </div>
 
     <button type="submit" class="submit"></button>

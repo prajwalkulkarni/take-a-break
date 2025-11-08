@@ -13,6 +13,7 @@ chrome.runtime.onInstalled.addListener(() => {
       water: 120,
       walk: 50,
       showNotifications: true,
+      enableDND: false,
       lookawayDuration: 20000,
       waterDuration: 60000,
       walkDuration: 120000,
@@ -83,7 +84,14 @@ chrome.alarms.onAlarm.addListener((alarm) => {
     // Check the time difference between the current time and the time when the browser was opened
     // If the difference is less than the least possible break interval, then don't show the notification
     // This is to prevent the notification from showing up when the browser is opened after sufficient time has lapsed since the last alarm fired
-    const items = await chrome.storage.local.get(["browserOpenedTime"]);
+    const items = await chrome.storage.local.get([
+      "browserOpenedTime",
+      "enableDND",
+    ]);
+
+    if (items.enableDND) {
+      return;
+    }
     const browserOpenedTime = items.browserOpenedTime;
     const currentTime = new Date().getTime();
     const timeDiff = currentTime - browserOpenedTime;

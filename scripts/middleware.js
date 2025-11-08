@@ -2,9 +2,12 @@ import "../popup/popup.css";
 import { TO_MS_MULTIPLER } from "./constants.js";
 import {
   getBreakDurationStringInMinutesAndSeconds,
+  getBreakDurationInMinSecOrdinal,
   getDurationInMS,
   validateInput,
 } from "./utils.js";
+
+const nextBreakNode = document.querySelector("#next-break");
 const form = document.querySelector("form");
 const timeoutInput = document.querySelector("#timeout");
 const waterInput = document.querySelector("#water");
@@ -14,6 +17,7 @@ const timeoutLabel = document.querySelector("#timeoutLabel");
 const waterLabel = document.querySelector("#waterLabel");
 const walkLabel = document.querySelector("#walkLabel");
 const notifications = document.querySelector("#notifications");
+const dnd = document.querySelector("#dnd");
 const notifyOnBreakCompletionInput = document.querySelector(
   "#notifyOnBreakCompletion"
 );
@@ -36,6 +40,8 @@ chrome.storage.local.get(
     "waterDuration",
     "walkDuration",
     "notifyOnBreakCompletion",
+    "enableDND",
+    "nextScheduledAlarm",
   ],
   (items) => {
     const {
@@ -46,7 +52,25 @@ chrome.storage.local.get(
       walkDuration,
       waterDuration,
       notifyOnBreakCompletion,
+      showNotifications,
+      enableDND,
+      nextScheduledAlarm,
     } = items;
+
+    if (nextScheduledAlarm) {
+      let timeDiff = nextScheduledAlarm - Date.now();
+      const intervalId = setInterval(() => {
+        if (timeDiff > 0) {
+          nextBreakNode.textContent = `Next Break in: ${getBreakDurationInMinSecOrdinal(
+            timeDiff
+          )}`;
+          timeDiff -= 1000;
+        } else {
+          nextBreakNode.textContent = `Next Break in: 00:00:00`;
+          clearInterval(intervalId);
+        }
+      }, 1000);
+    }
 
     timeoutInput?.setAttribute("value", timeout?.toString());
     waterInput?.setAttribute("value", water?.toString());
@@ -70,7 +94,8 @@ chrome.storage.local.get(
       waterDuration
     )}`;
 
-    notifications.checked = items.showNotifications;
+    notifications.checked = showNotifications;
+    dnd.checked = enableDND;
     notifyOnBreakCompletionInput.checked = notifyOnBreakCompletion;
   }
 );
@@ -125,6 +150,7 @@ form?.addEventListener("submit", (e) => {
   const water = parseInt(formData.get("water"));
   const walk = parseInt(formData.get("walk"));
   const showNotifications = formData.get("notifications") === "on";
+  const enableDND = formData.get("dnd") === "on";
   const notifyOnBreakCompletion =
     formData.get("notifyOnBreakCompletion") === "on";
 
@@ -170,6 +196,7 @@ form?.addEventListener("submit", (e) => {
         walkDuration,
         waterDuration,
         notifyOnBreakCompletion,
+        enableDND,
       },
       (response) => {
         if (!response) {

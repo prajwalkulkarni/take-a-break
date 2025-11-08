@@ -139,6 +139,21 @@ export const getBreakDurationStringInMinutesAndSeconds = (breaktime) => {
   return `${seconds} second${seconds > 1 ? "s" : ""}`;
 };
 
+export const getBreakDurationInMinSecOrdinal = (nextBreakInMS) => {
+  const breakTimeInSeconds = nextBreakInMS / 1000;
+  const hours = Math.floor(breakTimeInSeconds / 3600);
+  const minutes = Math.floor((breakTimeInSeconds % 3600) / 60);
+  const seconds = Math.floor(breakTimeInSeconds % 60);
+
+  return (
+    hours.toString().padStart(2, "0") +
+    ":" +
+    minutes.toString().padStart(2, "0") +
+    ":" +
+    seconds.toString().padStart(2, "0")
+  );
+};
+
 export async function getNextAlarmTime() {
   const allAlarms = await chrome.alarms.getAll();
   allAlarms.sort((a, b) => a.scheduledTime - b.scheduledTime);
